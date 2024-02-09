@@ -11,7 +11,7 @@ RM			=	rm -rf
 HEADER_SRCS	=	philo.h 
 HEADER_DIR	=	includes/
 HEADER		=	$(addprefix $(HEADER_DIR), $(HEADER_SRCS))
-SRCS		=	main.c 
+SRCS		=	main.c init.c process.c time.c
 
 SRC_DIR		=	src/
 SRC_PATH	=	$(addprefix $(SRC_DIR), $(SRCS))
