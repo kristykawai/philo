@@ -31,7 +31,7 @@ int	gettime()
 	if(gettimeofday(&current_time, NULL) != 0)
 		return(-1);
 	current_time_ms = current_time.tv_sec * 1000 + current_time.tv_usec/1000;
-	// printf("millisecond: %ld\n",(long)current_time.tv_usec);
+	printf("millisecond: %ld\n",(long)current_time.tv_usec);
 	return(current_time_ms);
 }
 
