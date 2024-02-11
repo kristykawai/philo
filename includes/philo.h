@@ -26,15 +26,29 @@ typedef struct s_rules
 	time_t t_rule_sleep;
 	int min_eat_count;
 	time_t t_sim_start;
+	int	*fork_state;
 	pthread_mutex_t *fork;
 }t_rules;
 
-//init.c
-int		init_rules(t_rules **rules, char **argv);
-int		init_fork(pthread_mutex_t *mutex_fork);
+//init_fork.c
+int		int_fork_state_value(t_rules **rules);
+int		int_fork_mutex(t_rules **rules);
+void	init_fork(t_rules **rules);
 
+//init_rules.c
+int		rules_value_check(t_rules **rules, char **argv);
+int		init_rules(t_rules **rules, char **argv);
+void	create_philo_thread(t_rules **rules);
+void	init_sim_time(t_rules ** rules);
+int		init_all(t_rules ** rules, char **argv);
+
+// int		init_fork(pthread_mutex_t *mutex_fork);
 //time.c
 long	gettime_ms(void);
 
 //process.c
 void	*routine(pthread_mutex_t *mutex);
+
+//clean.c
+void	cleanup_rules(t_rules **rules);
+void	error_exit(char * error_msg, t_rules **rules);
