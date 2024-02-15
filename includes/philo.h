@@ -49,7 +49,7 @@ void	init_sim_time(t_rules ** rules);
 long	gettime_ms(void);
 
 //process.c
-void	*routine(pthread_mutex_t *mutex);
+void	*thread_create_process(void *mutex);
 
 //clean.c
 void	cleanup_rules(t_rules **rules);

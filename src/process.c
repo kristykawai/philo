@@ -3,33 +3,41 @@
 /*                                                        :::      ::::::::   */
 /*   process.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kchan <marvin@42.fr>                       +#+  +:+       +#+        */
+/*   By: kawai <kawai@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 15:31:40 by kchan             #+#    #+#             */
-/*   Updated: 2024/02/15 17:10:32 by kchan            ###   ########.fr       */
+/*   Updated: 2024/02/15 23:58:16 by kawai            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	*routine(pthread_mutex_t *mutex)
+void	*thread_create_process(void *philo_index)
 {
-	int i;
-    int mails = 0;
+	// pthread_mutex_t *mutex;
+	
+	// mutex = (pthread_mutex_t *)arg;
+	// int i;
+    // int mails = 0;
     
-	i = 0;
-	while(i < 10000000)
-	{
-		pthread_mutex_lock(mutex);
-		i++;
-		mails++;
-		pthread_mutex_unlock(mutex);
-		// read mails
-		// increment
-		// write mails
-	}
-	printf("print mail num:%d\n", mails);
-	return(0);
+	// i = 0;
+	// while(i < 10000000)
+	// {
+	// 	pthread_mutex_lock(mutex);
+	// 	i++;
+	// 	mails++;
+	// 	pthread_mutex_unlock(mutex);
+	// 	// read mails
+	// 	// increment
+	// 	// write mails
+	// }
+	int	id;
+	
+	id = 0;
+	if (philo_index != NULL)
+		id = *(int *)philo_index;
+	printf("id:%d\n",id+1);
+    return NULL;
 }
 
 // void* philosopher_routine(void *arg) {

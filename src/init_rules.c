@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_rules.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kchan <marvin@42.fr>                       +#+  +:+       +#+        */
+/*   By: kawai <kawai@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 15:11:31 by kchan             #+#    #+#             */
-/*   Updated: 2024/02/15 17:10:35 by kchan            ###   ########.fr       */
+/*   Updated: 2024/02/16 00:00:52 by kawai            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,13 +48,13 @@ int	init_rules(t_rules **rules, char **argv)
 void	create_philo_thread(t_rules **rules)
 {
 	int i;
-	
+
 	i = 0;
 	while(i < (*rules)->philo_number)
 	{
-		if (pthread_create(&(*rules)->philo[i].thread_id, 
-		NULL, routine,&(*rules)->fork[i]) != 0)
-		error_exit("thread creation failed.\n", rules);
+		pthread_create(&(*rules)->philo[i].thread_id, 
+			NULL, thread_create_process, (void *)&(*rules)->philo[i]);
+		printf("index:%d\n",i);
 		i++;
 	}
 }
@@ -63,6 +63,9 @@ void	init_philo(t_rules **rules)
 {
 	int	i;
 
+	(*rules)->philo = malloc((*rules)->philo_number * sizeof(t_philo));
+	if(!(*rules)->philo)
+		error_exit("failed to allocate memory for philo", rules);
 	i = 0;
 	while(i < (*rules)->philo_number)
 	{
@@ -81,11 +84,13 @@ int	init_all(t_rules **rules, char **argv)
 	if(init_rules(rules, argv) == -1)
 		return(-1);
 	init_fork(rules);
-	create_philo_thread(rules);
 	init_philo(rules);
+	create_philo_thread(rules);
 	init_sim_time(rules);
 	return(0);
 }
+
+
 
 //backup
 
