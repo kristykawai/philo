@@ -58,17 +58,22 @@ void	init_fork(t_rules **rules);
 int		rules_value_check(t_rules **rules, char **argv);
 int		init_rules(t_rules **rules, char **argv);
 void	create_philo_thread(t_rules **rules);
-int		init_all(t_rules ** rules, char **argv);
-// void	*thread_creation(void *philo_ptr);
+int		init_param(t_rules **rules, char **argv);
 void	*test(void *philo_ptr);
 // int		init_fork(pthread_mutex_t *mutex_fork);
 //time.c
 void	init_sim_time(t_rules ** rules);
 long	gettime_ms(void);
 
-//process.c
+//engine.c
 // void *routine(void *arg);
+void	engine(t_rules **rules);
+void	create_philo_thread(t_rules **rules);
+void	*test(void *philo_ptr);
+void	philo_pthread_join(t_rules **rules);
 
 //clean.c
 void	cleanup_rules(t_rules **rules);
 void	error_exit(char * error_msg, t_rules **rules);
+
+

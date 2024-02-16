@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_rules.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kchan <marvin@42.fr>                       +#+  +:+       +#+        */
+/*   By: kawai <kawai@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 15:11:31 by kchan             #+#    #+#             */
-/*   Updated: 2024/02/16 17:20:34 by kchan            ###   ########.fr       */
+/*   Updated: 2024/02/16 20:30:25 by kawai            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,15 +16,15 @@ int	rules_value_check(t_rules **rules, char **argv)
 {
 	if ((*rules)->philo_number <= 0 || (*rules)->time_rule_die <= 0 
 		|| (*rules)->time_rule_eat <= 0 || (*rules)->time_rule_sleep <= 0)
-		{
-			printf("Error: Only positive numbers are allowed for arguments 1 to 4.\n");
-			return (0);
-		}
-	if	(argv[5] != NULL && (*rules)->min_meal_count <= 0)
-		{
-			printf("Error: Only positive numbers are allowed for number of times must eat.\n");
-			return (0);
-		}
+	{
+		printf("Error: Only positive numbers are allowed for arguments 1 to 4.\n");
+		return (0);
+	}
+	if (argv[5] != NULL && (*rules)->min_meal_count <= 0)
+	{
+		printf("Error: Only positive numbers are allowed for number of times must eat.\n");
+		return (0);
+	}
 	return (1);
 }
 
@@ -67,44 +67,12 @@ void	init_philo(t_rules **rules)
 	(*rules)->philo[i-1].left_fork_id  = 0;
 }
 
-void create_philo_thread(t_rules **rules)
-{
-	int i;
-
-	i = 0;
-	while (i < (*rules)->philo_number)
-	{
-		printf("current i:%d\n",i);
-	if (pthread_create(&(*rules)->philo[i].thread_id, 
-		NULL, test, &(*rules)->philo[i]) != 0)
-			error_exit("failed to create thread for a philo", rules);
-		i++;
-	}
-}
-
-void *test(void *philo_ptr) 
-{
-    t_philo *philo;
-	t_rules *rules;
-	
-	philo = (t_philo *)philo_ptr;
-	rules = *(philo->rules);
-	while (1) 
-	{
-		printf("Philosopher %d is thinking\n", philo->philo_id);
-		printf("address %p\n", rules->philo);
-		sleep(1);
-    }
-    return NULL;
-}
-
-int	init_all(t_rules **rules, char **argv)
+int	init_param(t_rules **rules, char **argv)
 {
 	if(init_rules(rules, argv) == -1)
 		return(-1);
 	init_fork(rules);
 	init_philo(rules);
-	create_philo_thread(rules);
-	// init_sim_time(rules);
+	init_sim_time(rules);
 	return(0);
 }

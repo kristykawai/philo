@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kchan <marvin@42.fr>                       +#+  +:+       +#+        */
+/*   By: kawai <kawai@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 20:59:26 by kawai             #+#    #+#             */
-/*   Updated: 2024/02/16 17:10:33 by kchan            ###   ########.fr       */
+/*   Updated: 2024/02/16 20:34:58 by kawai            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,10 @@ int main(int argc, char *argv[])
 		if(!rules)
 			error_exit("Memory allocation for rule structure failed.\n", &rules);
 		printf("address of rules in main:%p\n", &rules);
-		ret = init_all(&rules, argv);
+		ret = init_param(&rules, argv);
 		if(ret == -1)
 			error_exit("initilization failed.\n", &rules);
+		engine(&rules);
 		cleanup_rules(&rules);
 	}
 	return (0);
