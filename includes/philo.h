@@ -69,7 +69,7 @@ long	gettime_ms(void);
 // void *routine(void *arg);
 void	engine(t_rules **rules);
 void	create_philo_thread(t_rules **rules);
-void	*test(void *philo_ptr);
+void	*routine(void *philo_ptr);
 void	philo_pthread_join(t_rules **rules);
 
 //clean.c
