@@ -9,14 +9,33 @@
 #include <time.h>
 #include <sys/time.h>
 
+
+/*
+philo_id starts at 1.
+fork_id starts at 1.
+clockwise opertation for processing. 
+except for the last philo,
+for each philo, left fork is to its left facing the table, left fork id is philo_id.
+for each philo, right fork is to its right facing the table, right fork id is philo_id -1.
+last philo left fork id is the start of the fork index.
+e.g. 5 philo
+philo id:5
+left fork id: 1
+right fork id: 4
+*/
+
+typedef struct s_rules t_rules;
+
 typedef struct s_philo
 {
 	int philo_id;
 	int left_fork_id;
 	int right_fork_id;
-	time_t t_last_meal;
+	time_t time_last_meal;
+	time_t time_creation;
 	int meal_count;
 	pthread_t	thread_id;
+	t_rules **rules;
 }t_philo;
 
 typedef struct s_rules
@@ -42,14 +61,15 @@ int		rules_value_check(t_rules **rules, char **argv);
 int		init_rules(t_rules **rules, char **argv);
 void	create_philo_thread(t_rules **rules);
 int		init_all(t_rules ** rules, char **argv);
-
+// void	*thread_creation(void *philo_ptr);
+void	*test(void *philo_ptr);
 // int		init_fork(pthread_mutex_t *mutex_fork);
 //time.c
 void	init_sim_time(t_rules ** rules);
 long	gettime_ms(void);
 
 //process.c
-void	*thread_create_process(void *mutex);
+// void *routine(void *arg);
 
 //clean.c
 void	cleanup_rules(t_rules **rules);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_rules.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kawai <kawai@student.42.fr>                +#+  +:+       +#+        */
+/*   By: kchan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 15:11:31 by kchan             #+#    #+#             */
-/*   Updated: 2024/02/16 00:05:54 by kawai            ###   ########.fr       */
+/*   Updated: 2024/02/16 14:08:49 by kchan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,20 +45,6 @@ int	init_rules(t_rules **rules, char **argv)
 	return(0);
 }
 
-void	create_philo_thread(t_rules **rules)
-{
-	int i;
-
-	i = 0;
-	while(i < (*rules)->philo_number)
-	{
-		pthread_create(&(*rules)->philo[i].thread_id, 
-			NULL, thread_create_process, (void *)&(*rules)->philo[i]);
-		printf("index:%d\n",i);
-		i++;
-	}
-}
-
 void	init_philo(t_rules **rules)
 {
 	int	i;
@@ -69,14 +55,62 @@ void	init_philo(t_rules **rules)
 	i = 0;
 	while(i < (*rules)->philo_number)
 	{
-		(*rules)->philo[i].philo_id = i;
-		(*rules)->philo[i].left_fork_id = i;	
-		(*rules)->philo[i].right_fork_id = i + 1;
-		(*rules)->philo[i].t_last_meal = 0;	
+		(*rules)->philo[i].philo_id = i + 1;
+		(*rules)->philo[i].left_fork_id = i + 1;	
+		(*rules)->philo[i].right_fork_id = i; 
+		(*rules)->philo[i].time_last_meal = 0;	
+		(*rules)->philo[i].time_creation = 0;	
 		(*rules)->philo[i].meal_count = -1;	
+		(*rules)->philo[i].rules = rules;
 		i++;
 	}
 	(*rules)->philo[i-1].left_fork_id  = 0;
+}
+
+void create_philo_thread(t_rules **rules)
+{
+    int i;
+
+    i = 0;
+    while (i < (*rules)->philo_number)
+    {
+        if (pthread_create(&(*rules)->philo[i].thread_id, 
+            NULL, test, &(*rules)->philo[i]) != 0)
+            error_exit("failed to create thread for a philo", rules);
+        i++;
+    }
+}
+void	*test(void *philo_ptr)
+{
+	t_philo *philo;
+	t_rules *rules;
+	
+	philo = (t_philo *)philo_ptr;
+    rules = (t_rules *)*philo->rules;
+	// printf("test philo id:%d\n", philo->philo_id);
+	// printf("address of rules:%p\n", philo->rules);
+	if (philo->rules != NULL && *philo->rules != NULL) 
+	{
+		if (rules->fork_state != NULL && rules->fork_state[philo->left_fork_id] == 0) 
+		{
+			pthread_mutex_lock(&(rules->fork[philo->left_fork_id]));
+			printf("left fork is available and locked\n");
+			printf("left fork id:%d\n",philo->left_fork_id);
+			printf("left fork is picked up by philo:%d\n",philo->philo_id);
+			rules->fork_state[philo->left_fork_id] = 1;
+			
+			printf("right fork id:%d\n",philo->right_fork_id);
+			if (rules->fork_state != NULL && rules->fork_state[philo->right_fork_id] == 0) 
+			pthread_mutex_lock(&(rules->fork[philo->right_fork_id]));
+			printf("right fork is available and locked\n");
+			rules->fork_state[philo->right_fork_id] = 1;
+			printf("right fork is picked up by philo:%d\n",philo->philo_id);
+			printf("philo %d is eating\n",philo->philo_id);
+		}
+    }
+
+	// printf("I am eating");
+	return NULL;
 }
 
 int	init_all(t_rules **rules, char **argv)
@@ -90,21 +124,11 @@ int	init_all(t_rules **rules, char **argv)
 	return(0);
 }
 
-
-
-//backup
-
-// void	create_philo_thread(t_rules **rules)
+// void	*thread_creation(void *philo_ptr)
 // {
-// 	pthread_t thread[(*rules)->philo_number];
-// 	int	i;
-	
-// 	i = 0;
-// 	while(i < (*rules)->philo_number)
-// 	{
-// 	if (pthread_create(&thread[i], 
-// 		NULL, routine(&(*rules)->fork[i]), NULL) != 0)
-// 		error_exit("thread creation failed.\n", rules);
-// 		i++;
-// 	}
+// 	// t_rules					*rules;
+// 	t_philo *const	philo = (t_philo *)philo_ptr;
+// 	// rules = philo->rules;
+// 	printf("philo id:%d",philo->philo_id);
+// 	return (NULL);
 // }
