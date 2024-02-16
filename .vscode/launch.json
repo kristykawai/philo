@@ -6,7 +6,7 @@
         "request": "launch",
         "name": "Debug",
         "program": "${workspaceFolder}/philo",
-        "args": ["6", "7", "7", "8", "9"],
+        "args": ["4", "100", "30", "30"],
         "cwd": "${workspaceFolder}"
       },
       {

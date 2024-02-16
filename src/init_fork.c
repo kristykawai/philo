@@ -6,7 +6,7 @@
 /*   By: kchan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 22:38:51 by kawai             #+#    #+#             */
-/*   Updated: 2024/02/16 14:08:53 by kchan            ###   ########.fr       */
+/*   Updated: 2024/02/16 15:31:08 by kchan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ int int_fork_mutex(t_rules **rules)
 	}
 	return(0);
 }
-
+ 
 void	init_fork(t_rules **rules)
 {
 	if(int_fork_state_value(rules) == -1)

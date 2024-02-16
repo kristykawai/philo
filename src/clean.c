@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   clean.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kawai <kawai@student.42.fr>                +#+  +:+       +#+        */
+/*   By: kchan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 21:41:19 by kawai             #+#    #+#             */
-/*   Updated: 2024/02/11 23:03:53 by kawai            ###   ########.fr       */
+/*   Updated: 2024/02/16 15:38:26 by kchan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,11 @@ void cleanup_rules(t_rules **rules)
 			pthread_mutex_destroy(&(*rules)->fork[i]);
 		free((*rules)->fork);
 		(*rules)->fork = NULL;
+	}
+	if ((*rules)->philo != NULL)
+	{
+		free((*rules)->philo);
+		(*rules)->philo = NULL;
 	}
 	if((*rules)!= NULL)
 	{

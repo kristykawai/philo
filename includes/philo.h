@@ -24,8 +24,6 @@ left fork id: 1
 right fork id: 4
 */
 
-typedef struct s_rules t_rules;
-
 typedef struct s_philo
 {
 	int philo_id;
@@ -35,7 +33,7 @@ typedef struct s_philo
 	time_t time_creation;
 	int meal_count;
 	pthread_t	thread_id;
-	t_rules **rules;
+	struct s_rules **rules;
 }t_philo;
 
 typedef struct s_rules
