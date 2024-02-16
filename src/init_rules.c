@@ -6,7 +6,7 @@
 /*   By: kawai <kawai@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 15:11:31 by kchan             #+#    #+#             */
-/*   Updated: 2024/02/16 20:30:25 by kawai            ###   ########.fr       */
+/*   Updated: 2024/02/16 23:17:13 by kawai            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ void	init_philo(t_rules **rules)
 		(*rules)->philo[i].time_creation = 0;	
 		(*rules)->philo[i].meal_count = -1;	
 		(*rules)->philo[i].rules = rules;
+		(*rules)->philo[i].is_alive = 1;
 		i++;
 	}
 	(*rules)->philo[i-1].left_fork_id  = 0;

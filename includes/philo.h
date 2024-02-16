@@ -8,8 +8,7 @@
 #include <sys/syscall.h>
 #include <time.h>
 #include <sys/time.h>
-
-
+#include <signal.h>
 /*
 philo_id starts at 1.
 fork_id starts at 1.
@@ -34,6 +33,7 @@ typedef struct s_philo
 	int meal_count;
 	pthread_t	thread_id;
 	struct s_rules **rules;
+	int	is_alive;
 }t_philo;
 
 typedef struct s_rules
@@ -59,9 +59,10 @@ int		rules_value_check(t_rules **rules, char **argv);
 int		init_rules(t_rules **rules, char **argv);
 void	create_philo_thread(t_rules **rules);
 int		init_param(t_rules **rules, char **argv);
-void	*test(void *philo_ptr);
+void	*routine(void *philo_ptr);
 // int		init_fork(pthread_mutex_t *mutex_fork);
 //time.c
+long	process_time_ms(long start_time, long end_time);
 void	init_sim_time(t_rules ** rules);
 long	gettime_ms(void);
 
@@ -77,3 +78,5 @@ void	cleanup_rules(t_rules **rules);
 void	error_exit(char * error_msg, t_rules **rules);
 
 
+//util.c
+void print_log(t_rules *rules, char *msg);
