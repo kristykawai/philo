@@ -6,7 +6,7 @@
 /*   By: kawai <kawai@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 15:11:31 by kchan             #+#    #+#             */
-/*   Updated: 2024/02/16 23:17:13 by kawai            ###   ########.fr       */
+/*   Updated: 2024/02/17 19:09:12 by kawai            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,11 @@ int	init_rules(t_rules **rules, char **argv)
 	if(!rules_value_check(rules, argv))
 		return (-1);
 	(*rules)->time_sim_start = gettime_ms();
+	(*rules)->current_turn = 0;
+	(*rules)->odd_turn_count = 0;
+	(*rules)->total_odd_philo = -1;
+	(*rules)->total_odd_philo
+		 = count_odd_numbers((*rules)->philo_number);
 	return(0);
 }
 
@@ -72,6 +77,7 @@ int	init_param(t_rules **rules, char **argv)
 {
 	if(init_rules(rules, argv) == -1)
 		return(-1);
+	init_turn(rules);
 	init_fork(rules);
 	init_philo(rules);
 	init_sim_time(rules);

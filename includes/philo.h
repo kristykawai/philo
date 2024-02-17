@@ -47,6 +47,11 @@ typedef struct s_rules
 	int	*fork_state;
 	pthread_mutex_t *fork;
 	t_philo *philo;
+	int current_turn;
+	int	odd_turn_count;
+	int total_odd_philo;
+	pthread_mutex_t *turn_mutex;
+	pthread_mutex_t *access_mutex;
 }t_rules;
 
 //init_fork.c
@@ -60,6 +65,10 @@ int		init_rules(t_rules **rules, char **argv);
 void	create_philo_thread(t_rules **rules);
 int		init_param(t_rules **rules, char **argv);
 void	*routine(void *philo_ptr);
+
+//int_turn.c
+void	init_turn(t_rules **rules);
+
 // int		init_fork(pthread_mutex_t *mutex_fork);
 //time.c
 long	process_time_ms(long start_time, long end_time);
@@ -68,15 +77,17 @@ long	gettime_ms(void);
 
 //engine.c
 // void *routine(void *arg);
+
 void	engine(t_rules **rules);
 void	create_philo_thread(t_rules **rules);
 void	*routine(void *philo_ptr);
 void	philo_pthread_join(t_rules **rules);
 
 //clean.c
+void	destroy_mutexes(t_rules **rules);
 void	cleanup_rules(t_rules **rules);
 void	error_exit(char * error_msg, t_rules **rules);
 
-
 //util.c
-void print_log(t_rules *rules, char *msg);
+int		count_odd_numbers(int total_nb);
+void	print_log(t_philo *philo_ptr, char *msg);

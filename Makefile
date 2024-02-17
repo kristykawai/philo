@@ -12,7 +12,8 @@ HEADER_SRCS	=	philo.h
 HEADER_DIR	=	includes/
 HEADER		=	$(addprefix $(HEADER_DIR), $(HEADER_SRCS))
 SRCS		=	main.c init_fork.c init_rules.c\
-				time.c clean.c engine.c util.c
+				time.c clean.c engine.c util.c \
+				process.c monitor.c init_turn.c
 
 SRC_DIR		=	src/
 SRC_PATH	=	$(addprefix $(SRC_DIR), $(SRCS))
