@@ -46,10 +46,12 @@ typedef struct s_rules
 	time_t time_sim_start;
 	int	*fork_state;
 	pthread_mutex_t *fork;
+	pthread_mutex_t *fork_array_mutex;
 	t_philo *philo;
 	int current_turn;
 	int	odd_turn_count;
 	int total_odd_philo;
+	int total_meal_count;
 	pthread_mutex_t *turn_mutex;
 	pthread_mutex_t *access_mutex;
 }t_rules;

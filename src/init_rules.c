@@ -6,7 +6,7 @@
 /*   By: kawai <kawai@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 15:11:31 by kchan             #+#    #+#             */
-/*   Updated: 2024/02/17 19:09:12 by kawai            ###   ########.fr       */
+/*   Updated: 2024/02/18 18:03:23 by kawai            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ int	init_rules(t_rules **rules, char **argv)
 	(*rules)->total_odd_philo = -1;
 	(*rules)->total_odd_philo
 		 = count_odd_numbers((*rules)->philo_number);
+	(*rules)->total_meal_count = 0;
 	return(0);
 }
 
@@ -61,11 +62,13 @@ void	init_philo(t_rules **rules)
 	while(i < (*rules)->philo_number)
 	{
 		(*rules)->philo[i].philo_id = i + 1;
-		(*rules)->philo[i].left_fork_id = i + 1;	
-		(*rules)->philo[i].right_fork_id = i;
+		// (*rules)->philo[i].left_fork_id = i + 1;	
+		// (*rules)->philo[i].right_fork_id = i;
+		(*rules)->philo[i].left_fork_id = -1;	
+		(*rules)->philo[i].right_fork_id = -1;
 		(*rules)->philo[i].time_last_meal = 0;	
 		(*rules)->philo[i].time_creation = 0;	
-		(*rules)->philo[i].meal_count = -1;	
+		(*rules)->philo[i].meal_count = 0;	
 		(*rules)->philo[i].rules = rules;
 		(*rules)->philo[i].is_alive = 1;
 		i++;

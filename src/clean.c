@@ -6,11 +6,17 @@
 /*   By: kawai <kawai@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 21:41:19 by kawai             #+#    #+#             */
-/*   Updated: 2024/02/17 19:00:14 by kawai            ###   ########.fr       */
+/*   Updated: 2024/02/18 18:18:24 by kawai            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+void free_mutex(pthread_mutex_t *mutex_ptr)
+{
+	free(mutex_ptr);
+	mutex_ptr = NULL;
+}
 
 void destroy_mutexes(t_rules **rules)
 {
@@ -21,21 +27,23 @@ void destroy_mutexes(t_rules **rules)
 	{
 		while(i < (*rules)->philo_number)
 			pthread_mutex_destroy(&(*rules)->fork[i]);
-		free((*rules)->fork);
-		(*rules)->fork = NULL;
+		free_mutex((*rules)->fork);
 		i++;
+	}
+	if((*rules)->fork_array_mutex != NULL)
+	{
+		pthread_mutex_destroy((*rules)->fork_array_mutex);
+		free_mutex((*rules)->fork_array_mutex);
 	}
 	if((*rules)->turn_mutex != NULL)
 	{
 		pthread_mutex_destroy((*rules)->turn_mutex);
-		free((*rules)->turn_mutex);
-		(*rules)->turn_mutex = NULL;
+		free_mutex((*rules)->turn_mutex);
 	}
 	if((*rules)->access_mutex != NULL)
 	{
 		pthread_mutex_destroy((*rules)->access_mutex);
-		free((*rules)->access_mutex);
-		(*rules)->access_mutex = NULL;
+		free_mutex((*rules)->access_mutex);
 	}
 }
 

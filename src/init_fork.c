@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_fork.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kchan <marvin@42.fr>                       +#+  +:+       +#+        */
+/*   By: kawai <kawai@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 22:38:51 by kawai             #+#    #+#             */
-/*   Updated: 2024/02/16 15:31:08 by kchan            ###   ########.fr       */
+/*   Updated: 2024/02/18 18:09:18 by kawai            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,12 +27,26 @@ int int_fork_state_value(t_rules **rules)
 	return (0);
 }
 
+
+int int_fork_array_mutex(t_rules **rules)
+{
+	// pthread_mutex_t *fork_array_mutex;
+
+	(*rules)->fork_array_mutex = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t));
+	if(pthread_mutex_init((*rules)->fork_array_mutex, NULL) != 0)
+	{	
+		printf("ERROR: fail initialize fork array mutex.\n");
+		return (-1);	
+	}
+	return(0);
+}
+
 int int_fork_mutex(t_rules **rules)
 {
 	int i;
-	
+
 	i = 0;
-	(*rules)->fork = (pthread_mutex_t *)malloc(sizeof(int) * (*rules)->philo_number);
+	(*rules)->fork = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t) * (*rules)->philo_number);
 	if ((*rules)->fork == NULL)
 	{
 		printf("ERROR: fail to allocate memory for fork mutex.\n");
@@ -52,6 +66,8 @@ int int_fork_mutex(t_rules **rules)
  
 void	init_fork(t_rules **rules)
 {
+	if(int_fork_array_mutex(rules) == -1)
+		error_exit("fork array mutex initialization failed.\n", rules);
 	if(int_fork_state_value(rules) == -1)
 		error_exit("fork state value initialization failed.\n", rules);
 	if(int_fork_mutex(rules) == -1)
