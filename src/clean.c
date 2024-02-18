@@ -6,7 +6,7 @@
 /*   By: kawai <kawai@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 21:41:19 by kawai             #+#    #+#             */
-/*   Updated: 2024/02/18 19:35:46 by kawai            ###   ########.fr       */
+/*   Updated: 2024/02/18 21:03:44 by kawai            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,15 @@ void free_mutex(pthread_mutex_t *mutex_ptr)
 {
 	free(mutex_ptr);
 	mutex_ptr = NULL;
+}
+
+void destroy_mutexes(t_rules **rules)
+{
+	if((*rules)->access_mutex != NULL)
+	{
+		pthread_mutex_destroy((*rules)->access_mutex);
+		free_mutex((*rules)->access_mutex);
+	}
 }
 
 void destroy_mutexes_loop(t_rules **rules)
@@ -29,20 +38,6 @@ void destroy_mutexes_loop(t_rules **rules)
 			pthread_mutex_destroy(&(*rules)->fork[i]);
 		free_mutex((*rules)->fork);
 		i++;
-	}
-}
-
-void destroy_mutexes(t_rules **rules)
-{
-	if((*rules)->turn_mutex != NULL)
-	{
-		pthread_mutex_destroy((*rules)->turn_mutex);
-		free_mutex((*rules)->turn_mutex);
-	}
-	if((*rules)->access_mutex != NULL)
-	{
-		pthread_mutex_destroy((*rules)->access_mutex);
-		free_mutex((*rules)->access_mutex);
 	}
 }
 

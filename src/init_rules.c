@@ -6,7 +6,7 @@
 /*   By: kawai <kawai@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 15:11:31 by kchan             #+#    #+#             */
-/*   Updated: 2024/02/18 19:44:43 by kawai            ###   ########.fr       */
+/*   Updated: 2024/02/18 21:00:05 by kawai            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,15 @@ int	init_rules(t_rules **rules, char **argv)
 	return(0);
 }
 
+void init_access(t_rules **rules)
+{
+	(*rules)->access_mutex = (pthread_mutex_t *) malloc(sizeof(pthread_mutex_t));
+	if ((*rules)->access_mutex == NULL)
+		error_exit("fail to allocate memory for access mutex.\n", rules);
+	if (pthread_mutex_init((*rules)->access_mutex, NULL) != 0)
+		error_exit("access mutex initialization failed.\n", rules);
+}
+
 void	init_philo(t_rules **rules)
 {
 	int	i;
@@ -73,7 +82,7 @@ int	init_param(t_rules **rules, char **argv)
 {
 	if(init_rules(rules, argv) == -1)
 		return(-1);
-	init_turn(rules);
+	init_access(rules);
 	init_fork(rules);
 	init_philo(rules);
 	init_sim_time(rules);

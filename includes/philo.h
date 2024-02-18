@@ -9,19 +9,6 @@
 #include <time.h>
 #include <sys/time.h>
 #include <signal.h>
-/*
-philo_id starts at 1.
-fork_id starts at 1.
-clockwise opertation for processing. 
-except for the last philo,
-for each philo, left fork is to its left facing the table, left fork id is philo_id.
-for each philo, right fork is to its right facing the table, right fork id is philo_id -1.
-last philo left fork id is the start of the fork index.
-e.g. 5 philo
-philo id:5
-left fork id: 1
-right fork id: 4
-*/
 
 typedef struct s_philo
 {
@@ -60,29 +47,34 @@ void	init_fork(t_rules **rules);
 //init_rules.c
 int		rules_value_check(t_rules **rules, char **argv);
 int		init_rules(t_rules **rules, char **argv);
+void	init_access(t_rules **rules);
 void	create_philo_thread(t_rules **rules);
 int		init_param(t_rules **rules, char **argv);
-void	*routine(void *philo_ptr);
 
-//int_turn.c
-void	init_turn(t_rules **rules);
-
-// int		init_fork(pthread_mutex_t *mutex_fork);
 //time.c
-long	process_time_ms(long start_time, long end_time);
 void	init_sim_time(t_rules ** rules);
+long	process_time_ms(long start_time, long end_time);
 long	gettime_ms(void);
 
 //engine.c
-// void *routine(void *arg);
-
-void	engine(t_rules **rules);
 void	create_philo_thread(t_rules **rules);
-void	*routine(void *philo_ptr);
 void	philo_pthread_join(t_rules **rules);
+void	engine(t_rules **rules);
+
+//process.c
+void	*routine(void *philo_ptr);
+
+//routine_fork.c
+int		find_available_fork(int *fork_state, int philo_nb);
+int		check_assign_fork(t_philo *philo);
+void	try_to_acquire_forks(t_philo *philo);
+void	put_down_forks(t_philo *philo);
+
 
 //clean.c
+void	free_mutex(pthread_mutex_t *mutex_ptr);
 void	destroy_mutexes(t_rules **rules);
+void	destroy_mutexes_loop(t_rules **rules);
 void	cleanup_rules(t_rules **rules);
 void	error_exit(char * error_msg, t_rules **rules);
 
