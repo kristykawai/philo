@@ -6,7 +6,7 @@
 /*   By: kawai <kawai@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 15:31:40 by kchan             #+#    #+#             */
-/*   Updated: 2024/02/18 18:59:52 by kawai            ###   ########.fr       */
+/*   Updated: 2024/02/18 19:44:43 by kawai            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,14 +46,16 @@ int check_assign_fork(t_philo *philo)
 void try_to_acquire_forks(t_philo *philo)
 {
 	t_rules *rules;
-
+	
 	rules = *(philo->rules);
-	pthread_mutex_lock(rules->fork_array_mutex);
+	pthread_mutex_lock(rules->access_mutex);
 	if (philo->left_fork_id == -1)
 		philo->left_fork_id = check_assign_fork(philo); //new fork if possible
 	if (philo->right_fork_id == -1)
 		philo->right_fork_id = check_assign_fork(philo); //new fork if possible
-	pthread_mutex_unlock(rules->fork_array_mutex);
+	// printf("left fork id:%d\n", philo->left_fork_id);
+	// 	printf("right fork id:%d\n", philo->right_fork_id);
+	pthread_mutex_unlock(rules->access_mutex);
 }
 
 void	put_down_forks(t_philo *philo) 
@@ -61,7 +63,7 @@ void	put_down_forks(t_philo *philo)
 	t_rules *rules;
 	
 	rules = *(philo->rules);
-	pthread_mutex_lock(rules->fork_array_mutex);
+	pthread_mutex_lock(rules->access_mutex);
 	if (philo->left_fork_id != -1)
 	{
 		pthread_mutex_unlock(&rules->fork[philo->left_fork_id]);
@@ -76,7 +78,7 @@ void	put_down_forks(t_philo *philo)
 		print_log(philo, "has put down a fork.");
 		philo->right_fork_id = -1;
 	}
-	pthread_mutex_unlock(rules->fork_array_mutex);
+	pthread_mutex_unlock(rules->access_mutex);
 }
 
 void	eating(t_philo *philo)
@@ -86,11 +88,9 @@ void	eating(t_philo *philo)
 	rules = *(philo->rules);
 	philo->time_last_meal = gettime_ms();
 	print_log(philo,"is eating.");
-	printf("philo number:%d\n",philo->philo_id);
 	usleep(rules->time_rule_eat * 1000);
-	// printf("last meal time updated: %ld\n", philo->time_last_meal);
 	philo->meal_count++;
-	// printf("philo %d meal count: %d\n", philo->philo_id,philo->meal_count);
+	rules->total_meal_count++;
 }
 
 
@@ -117,7 +117,6 @@ void eat_and_sleep_think(t_philo *philo)
 	put_down_forks(philo);
 	sleeping(philo);
 	if (philo->philo_id % 2 != 0)
-	rules->odd_turn_count++;
 	thinking(philo);
 }
 
@@ -128,30 +127,19 @@ void *routine(void *philo_ptr)
 
     philo->time_creation = gettime_ms();
     philo->time_last_meal = philo->time_creation;
-
     while (1) 
     {
-        pthread_mutex_unlock(rules->turn_mutex);  // Unlock before attempting to pick up forks
-
-        if ((philo->philo_id % 2 != 0 && rules->odd_turn_count < rules->total_odd_philo) ||
-            (philo->philo_id % 2 == 0 && rules->odd_turn_count == rules->total_odd_philo))
+		if(philo->meal_count <= rules->total_meal_count/ rules->philo_number)
         {
-            pthread_mutex_lock(rules->access_mutex);  // Lock critical section
-            try_to_acquire_forks(philo);
-            eat_and_sleep_think(philo);
-            put_down_forks(philo);
-            pthread_mutex_unlock(rules->access_mutex);  // Unlock critical section
+			try_to_acquire_forks(philo);
+			if(philo->left_fork_id != -1 && philo->right_fork_id != -1)
+			{
+				eat_and_sleep_think(philo);
+				put_down_forks(philo);
+			}
         }
         else 
-        {            	
-            pthread_mutex_unlock(rules->turn_mutex);  // Unlock when it's not the philosopher's turn
             sleeping(philo);
-            print_log(philo, "is sleeping.\n");
-        }
-
-        pthread_mutex_lock(rules->turn_mutex);  // Lock to update turn
-        rules->current_turn++;
-        pthread_mutex_unlock(rules->turn_mutex);  // Unlock after updating turn
         usleep(1000);
     }
 }

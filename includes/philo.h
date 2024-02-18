@@ -46,13 +46,9 @@ typedef struct s_rules
 	time_t time_sim_start;
 	int	*fork_state;
 	pthread_mutex_t *fork;
-	pthread_mutex_t *fork_array_mutex;
 	t_philo *philo;
 	int current_turn;
-	int	odd_turn_count;
-	int total_odd_philo;
 	int total_meal_count;
-	pthread_mutex_t *turn_mutex;
 	pthread_mutex_t *access_mutex;
 }t_rules;
 
@@ -91,5 +87,4 @@ void	cleanup_rules(t_rules **rules);
 void	error_exit(char * error_msg, t_rules **rules);
 
 //util.c
-int		count_odd_numbers(int total_nb);
 void	print_log(t_philo *philo_ptr, char *msg);
