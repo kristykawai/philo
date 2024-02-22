@@ -3,14 +3,30 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kawai <kawai@student.42.fr>                +#+  +:+       +#+        */
+/*   By: kchan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 20:59:26 by kawai             #+#    #+#             */
-/*   Updated: 2024/02/17 19:12:31 by kawai            ###   ########.fr       */
+/*   Updated: 2024/02/22 18:35:11 by kchan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+int find_death(t_philo *philo)
+{
+	int i;
+	t_rules *rules;
+
+	rules = *(philo->rules);
+	i = 0;
+	while(i < rules->philo_number)
+		{
+			if (rules->philo[i].is_alive == 0) 
+				return(1);
+			i++;
+		}
+	return (0);
+}
 
 int main(int argc, char *argv[])
 {
@@ -33,6 +49,11 @@ int main(int argc, char *argv[])
 		if(ret == -1)
 			error_exit("initilization failed.\n", &rules);
 		engine(&rules);
+		while(1)
+		{
+			if (find_death(rules->philo) == 1)
+				error_exit("someone dead",&rules);
+		}
 		cleanup_rules(&rules);
 	}
 	return (0);

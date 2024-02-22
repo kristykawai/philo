@@ -6,7 +6,7 @@
 /*   By: kchan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 15:31:40 by kchan             #+#    #+#             */
-/*   Updated: 2024/02/22 10:58:16 by kchan            ###   ########.fr       */
+/*   Updated: 2024/02/22 17:58:12 by kchan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,24 +49,25 @@ void eat_and_sleep_think(t_philo *philo)
 
 void *routine(void *philo_ptr) 
 {
-    t_philo *philo = (t_philo *)philo_ptr;
-    t_rules *rules = *(philo->rules);
+	t_philo *philo = (t_philo *)philo_ptr;
+	t_rules *rules = *(philo->rules);
 
-    philo->time_creation = gettime_ms();
-    philo->time_last_meal = philo->time_creation;
-    while (1) 
-    {
-		if(philo->meal_count <= rules->total_meal_count/ rules->philo_number)
-        {
+	philo->time_creation = gettime_ms();
+	philo->time_last_meal = philo->time_creation;
+	while (philo->is_alive == 1) 
+	{
+		if(philo->meal_count <= rules->total_meal_count/ rules->philo_number && philo->is_alive == 1)
+		{
 			try_to_acquire_forks(philo);
-			if(philo->left_fork_id != -1 && philo->right_fork_id != -1)
+			if(philo->left_fork_id != -1 && philo->right_fork_id != -1 && philo->is_alive == 1)
 			{
 				eat_and_sleep_think(philo);
 				put_down_forks(philo);
 			}
-        }
-        else 
-            sleeping(philo);
-        usleep(1000);
-    }
+		}
+		else 
+			sleeping(philo);
+		usleep(1000);
+	}
+	return (NULL);
 }
