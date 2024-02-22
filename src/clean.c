@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   clean.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kawai <kawai@student.42.fr>                +#+  +:+       +#+        */
+/*   By: kchan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 21:41:19 by kawai             #+#    #+#             */
-/*   Updated: 2024/02/18 21:03:44 by kawai            ###   ########.fr       */
+/*   Updated: 2024/02/22 16:24:21 by kchan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,16 +43,19 @@ void destroy_mutexes_loop(t_rules **rules)
 
 void cleanup_rules(t_rules **rules)
 {
+	printf("before free fork state");
     if((*rules)->fork_state != NULL)
 	{
 		free((*rules)->fork_state);
 		(*rules)->fork_state = NULL;
 	}
+	printf("before free philo");
 	if ((*rules)->philo != NULL)
 	{
 		free((*rules)->philo);
 		(*rules)->philo = NULL;
 	}
+	printf("before free mutex");
 	destroy_mutexes(rules);
 	destroy_mutexes_loop(rules);
 	if((*rules)!= NULL)

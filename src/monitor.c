@@ -3,44 +3,68 @@
 /*                                                        :::      ::::::::   */
 /*   monitor.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kawai <kawai@student.42.fr>                +#+  +:+       +#+        */
+/*   By: kchan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 18:09:35 by kawai             #+#    #+#             */
-/*   Updated: 2024/02/17 18:50:28 by kawai            ###   ########.fr       */
+/*   Updated: 2024/02/22 16:14:42 by kchan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	*monitor_thread(void *rule_ptr)
+void	*monitor_routine(void *philo_ptr)
 {
-	t_rules **rules;
-	rules = (t_rules **)rule_ptr;
-	int i;
-
-	i = -1;
-	while(1)
+	t_rules *rules;
+	t_philo *philo;
+	
+	philo = (t_philo*)philo_ptr;
+    rules = *(philo->rules);
+    while (philo->is_alive) 
 	{
-		while (++i < (*rules)->philo_number)
+        if (gettime_ms() - philo->time_last_meal >= rules->time_rule_die)
 		{
-			if ((*rules)->philo[i].is_alive) 
-			{
-				if (gettime_ms() - (*rules)->philo[i].time_last_meal >= (*rules)->time_rule_die) //last_meal time not updated
-				{
-					(*rules)->philo[i].is_alive = 0;
-					error_exit("process time smaller than time to die", rules); // tbc to check how to kill the thread 
-				}
-				else
-					(*rules)->philo[i].is_alive = 1;
-			}
-		}
-	usleep(10000);
-	}
-	return NULL;
+            philo->is_alive = 0;
+            error_exit("Philosopher died.", &rules);
+        }
+        usleep(10000);
+    }
+    return (NULL);
 }
 
 void create_monitor_thread(t_rules **rules)
 {
-	pthread_t monitor_thread_id;
-	pthread_create(&monitor_thread_id, NULL, monitor_thread, rules);
+int i;
+
+	i = 0;
+	while (i < (*rules)->philo_number)
+	{
+		if (pthread_create(&(*rules)->philo[i].thread_monitor_id, 
+			NULL, monitor_routine, &(*rules)->philo[i]) != 0)
+			error_exit("failed to create thread for a philo", rules);
+		i++;
+	}
 }
+
+	// t_rules **rules;
+	// rules = (t_rules **)rule_ptr;
+	// int i;
+
+	// i = -1;
+	// while(1)
+	// {
+	// 	while (++i < (*rules)->philo_number)
+	// 	{
+	// 		if ((*rules)->philo[i].is_alive) 
+	// 		{
+	// 			if (gettime_ms() - (*rules)->philo[i].time_last_meal >= (*rules)->time_rule_die) //last_meal time not updated
+	// 			{
+	// 				(*rules)->philo[i].is_alive = 0;
+	// 				error_exit("process time smaller than time to die", rules); // tbc to check how to kill the thread 
+	// 			}
+	// 			else
+	// 				(*rules)->philo[i].is_alive = 1;
+	// 		}
+	// 	}
+	// usleep(10000);
+	// }
+	// return NULL;

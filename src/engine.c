@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   engine.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kawai <kawai@student.42.fr>                +#+  +:+       +#+        */
+/*   By: kchan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 20:25:53 by kawai             #+#    #+#             */
-/*   Updated: 2024/02/18 18:18:27 by kawai            ###   ########.fr       */
+/*   Updated: 2024/02/22 16:24:34 by kchan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,11 +34,17 @@ void	philo_pthread_join(t_rules **rules)
 		pthread_join((*rules)->philo[i].thread_id, NULL);
 		i++;
 	}
+	i = 0;
+	while (i < (*rules)->philo_number)
+	{
+		pthread_join((*rules)->philo[i].thread_monitor_id, NULL);
+		i++;
+	}
 }
 
 void	engine(t_rules **rules)
 {
 	create_philo_thread(rules);
-	// create_monitor_thread(rules);
+	create_monitor_thread(rules);
 	philo_pthread_join(rules);
 }

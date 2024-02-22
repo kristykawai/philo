@@ -19,6 +19,7 @@ typedef struct s_philo
 	time_t time_creation;
 	int meal_count;
 	pthread_t	thread_id;
+	pthread_t	thread_monitor_id;
 	struct s_rules **rules;
 	int	is_alive;
 }t_philo;
@@ -80,3 +81,7 @@ void	error_exit(char * error_msg, t_rules **rules);
 
 //util.c
 void	print_log(t_philo *philo_ptr, char *msg);
+
+//monitor.c
+void	*monitor_routine(void *philo_ptr);
+void	create_monitor_thread(t_rules **rules);
