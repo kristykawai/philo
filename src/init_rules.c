@@ -6,7 +6,7 @@
 /*   By: kawai <kawai@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 15:11:31 by kchan             #+#    #+#             */
-/*   Updated: 2024/02/18 21:00:05 by kawai            ###   ########.fr       */
+/*   Updated: 2024/02/22 23:32:20 by kawai            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,8 @@ int	init_rules(t_rules **rules, char **argv)
 	(*rules)->time_sim_start = gettime_ms();
 	(*rules)->current_turn = 0;
 	(*rules)->total_meal_count = 0;
+	(*rules)->philo_die = 0;
+	(*rules)->time_death = 0;
 	return(0);
 }
 
@@ -71,6 +73,7 @@ void	init_philo(t_rules **rules)
 		(*rules)->philo[i].right_fork_id = -1;
 		(*rules)->philo[i].time_last_meal = 0;	
 		(*rules)->philo[i].time_creation = 0;	
+		(*rules)->philo[i].time_death = 0;	
 		(*rules)->philo[i].meal_count = 0;	
 		(*rules)->philo[i].rules = rules;
 		(*rules)->philo[i].is_alive = 1;

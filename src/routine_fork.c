@@ -6,7 +6,7 @@
 /*   By: kawai <kawai@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 20:50:37 by kawai             #+#    #+#             */
-/*   Updated: 2024/02/18 20:51:04 by kawai            ###   ########.fr       */
+/*   Updated: 2024/02/22 23:29:50 by kawai            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,10 +49,13 @@ void try_to_acquire_forks(t_philo *philo)
 	
 	rules = *(philo->rules);
 	pthread_mutex_lock(rules->access_mutex);
-	if (philo->left_fork_id == -1)
-		philo->left_fork_id = check_assign_fork(philo);
-	if (philo->right_fork_id == -1)
-		philo->right_fork_id = check_assign_fork(philo);
+	if(!find_death(philo))
+	{
+		if (philo->left_fork_id == -1)
+			philo->left_fork_id = check_assign_fork(philo);
+		if (philo->right_fork_id == -1)
+			philo->right_fork_id = check_assign_fork(philo);
+	}
 	pthread_mutex_unlock(rules->access_mutex);
 }
 
@@ -62,19 +65,22 @@ void	put_down_forks(t_philo *philo)
 	
 	rules = *(philo->rules);
 	pthread_mutex_lock(rules->access_mutex);
-	if (philo->left_fork_id != -1)
+	if(!find_death(philo))
 	{
-		pthread_mutex_unlock(&rules->fork[philo->left_fork_id]);
-		rules->fork_state[philo->left_fork_id] = 0;
-		print_log(philo, "has put down a fork.");
-		philo->left_fork_id = -1;
-	}
-	if (philo->right_fork_id != -1)
-	{
-		pthread_mutex_unlock(&rules->fork[philo->right_fork_id]);
-		rules->fork_state[philo->right_fork_id] = 0;
-		print_log(philo, "has put down a fork.");
-		philo->right_fork_id = -1;
+		if (philo->left_fork_id != -1)
+		{
+			pthread_mutex_unlock(&rules->fork[philo->left_fork_id]);
+			rules->fork_state[philo->left_fork_id] = 0;
+			print_log(philo, "has put down a fork.");
+			philo->left_fork_id = -1;
+		}
+		if (philo->right_fork_id != -1)
+		{
+			pthread_mutex_unlock(&rules->fork[philo->right_fork_id]);
+			rules->fork_state[philo->right_fork_id] = 0;				
+			print_log(philo, "has put down a fork.");
+			philo->right_fork_id = -1;
+		}
 	}
 	pthread_mutex_unlock(rules->access_mutex);
 }

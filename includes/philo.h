@@ -17,6 +17,7 @@ typedef struct s_philo
 	int right_fork_id;
 	time_t time_last_meal;
 	time_t time_creation;
+	time_t time_death;
 	int meal_count;
 	pthread_t	thread_id;
 	pthread_t	thread_monitor_id;
@@ -37,6 +38,8 @@ typedef struct s_rules
 	t_philo *philo;
 	int current_turn;
 	int total_meal_count;
+	int philo_die;
+	time_t time_death;
 	pthread_mutex_t *access_mutex;
 }t_rules;
 
@@ -85,3 +88,4 @@ void	print_log(t_philo *philo_ptr, char *msg);
 //monitor.c
 void	*monitor_routine(void *philo_ptr);
 void	create_monitor_thread(t_rules **rules);
+void	*find_death(t_philo *philo);

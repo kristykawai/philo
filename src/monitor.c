@@ -3,24 +3,40 @@
 /*                                                        :::      ::::::::   */
 /*   monitor.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kchan <marvin@42.fr>                       +#+  +:+       +#+        */
+/*   By: kawai <kawai@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 18:09:35 by kawai             #+#    #+#             */
-/*   Updated: 2024/02/22 18:24:45 by kchan            ###   ########.fr       */
+/*   Updated: 2024/02/22 23:32:11 by kawai            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void handle_philosopher_death(t_philo *philo) 
+void *find_death(t_philo *philo)
 {
+	int i;
 	t_rules *rules;
 
 	rules = *(philo->rules);
-	print_log(philo, "is dead.");
-	// error_exit("Philosopher died.", &rules);
-	// (NULL);
+	i = 0;
+	while(i < rules->philo_number)
+		{
+			if (rules->philo[i].is_alive == 0)
+				return(&rules->philo[i]);
+			i++;
+		}
+	return (0);
 }
+
+// void handle_philosopher_death(t_philo *philo) 
+// {
+// 	// t_rules *rules;
+
+// 	// rules = *(philo->rules);
+// 	print_log(philo, "is dead.");
+// 	// error_exit("Philosopher died.", &rules);
+// 	// (NULL);
+// }
 
 void	*monitor_routine(void *philo_ptr)
 {
@@ -29,14 +45,20 @@ void	*monitor_routine(void *philo_ptr)
 
 	philo = (t_philo*)philo_ptr;
 	rules = *(philo->rules);
-	while (philo->is_alive == 1) 
+	while (philo->is_alive == 1 && rules->philo_die != 1) 
 	{
+		pthread_mutex_lock(rules->access_mutex);
 		if (gettime_ms() - philo->time_last_meal >= rules->time_rule_die)
 		{
 			philo->is_alive = 0;
-			handle_philosopher_death(philo);
+			philo->time_death = gettime_ms();
+			if(rules->philo_die == 0)
+				print_log(philo, "is dead.");
+			rules->time_death = philo->time_death;
+			rules->philo_die = 1;
 		}
-		usleep(10000);
+		pthread_mutex_unlock(rules->access_mutex);
+		usleep(1000);
 	}
 	return (NULL);
 }

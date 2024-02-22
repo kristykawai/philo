@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   process.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kchan <marvin@42.fr>                       +#+  +:+       +#+        */
+/*   By: kawai <kawai@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 15:31:40 by kchan             #+#    #+#             */
-/*   Updated: 2024/02/22 17:58:12 by kchan            ###   ########.fr       */
+/*   Updated: 2024/02/22 23:41:08 by kawai            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,14 @@ void	eating(t_philo *philo)
 	t_rules *rules;
 
 	rules = *(philo->rules);
-	philo->time_last_meal = gettime_ms();
-	print_log(philo,"is eating.");
-	usleep(rules->time_rule_eat * 1000);
-	philo->meal_count++;
-	rules->total_meal_count++;
+	if(rules->philo_die != 1)
+	{
+		philo->time_last_meal = gettime_ms();
+		print_log(philo,"is eating.");
+		usleep(rules->time_rule_eat * 1000);
+		philo->meal_count++;
+		rules->total_meal_count++;
+	}
 }
 
 void	sleeping(t_philo *philo)
@@ -29,22 +32,35 @@ void	sleeping(t_philo *philo)
 	t_rules *rules;
 
 	rules = *(philo->rules);
-	usleep(rules->time_rule_sleep * 1000);
-	print_log(philo, "is sleeping.");
+	if(rules->philo_die != 1)
+	{
+		usleep(rules->time_rule_sleep * 1000);
+		print_log(philo, "is sleeping.");
+	}
 }
 
 void	thinking(t_philo *philo)
 {	
-	print_log(philo, "is thinking.");
+	t_rules *rules;
+
+	rules = *(philo->rules);
+	if(rules->philo_die != 1)
+		print_log(philo, "is thinking.");
 }
 
 void eat_and_sleep_think(t_philo *philo)
 {
-	eating(philo);
-	put_down_forks(philo);
-	sleeping(philo);
-	if (philo->philo_id % 2 != 0)
-	thinking(philo);
+	t_rules *rules;
+
+	rules = *(philo->rules);
+	if(!find_death(philo) && rules->philo_die != 1)
+		eating(philo);
+	if(!find_death(philo) && rules->philo_die != 1)
+		put_down_forks(philo);
+	if(!find_death(philo) && rules->philo_die != 1)
+		sleeping(philo);
+	if ((!find_death(philo)) && philo->philo_id % 2 != 0 && rules->philo_die != 1)
+		thinking(philo);
 }
 
 void *routine(void *philo_ptr) 
@@ -54,7 +70,7 @@ void *routine(void *philo_ptr)
 
 	philo->time_creation = gettime_ms();
 	philo->time_last_meal = philo->time_creation;
-	while (philo->is_alive == 1) 
+	while (philo->is_alive == 1 && !find_death(philo)) 
 	{
 		if(philo->meal_count <= rules->total_meal_count/ rules->philo_number && philo->is_alive == 1)
 		{
@@ -67,7 +83,7 @@ void *routine(void *philo_ptr)
 		}
 		else 
 			sleeping(philo);
-		usleep(1000);
+		// usleep(1000);
 	}
 	return (NULL);
 }
