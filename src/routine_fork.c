@@ -6,7 +6,7 @@
 /*   By: kawai <kawai@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 20:50:37 by kawai             #+#    #+#             */
-/*   Updated: 2024/02/22 23:29:50 by kawai            ###   ########.fr       */
+/*   Updated: 2024/02/23 10:55:09 by kawai            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void try_to_acquire_forks(t_philo *philo)
 	
 	rules = *(philo->rules);
 	pthread_mutex_lock(rules->access_mutex);
-	if(!find_death(philo))
+	if(!find_death(philo) && !check_eat_min(philo))
 	{
 		if (philo->left_fork_id == -1)
 			philo->left_fork_id = check_assign_fork(philo);
@@ -65,7 +65,7 @@ void	put_down_forks(t_philo *philo)
 	
 	rules = *(philo->rules);
 	pthread_mutex_lock(rules->access_mutex);
-	if(!find_death(philo))
+	if(!find_death(philo) && !check_eat_min(philo))
 	{
 		if (philo->left_fork_id != -1)
 		{
@@ -77,7 +77,7 @@ void	put_down_forks(t_philo *philo)
 		if (philo->right_fork_id != -1)
 		{
 			pthread_mutex_unlock(&rules->fork[philo->right_fork_id]);
-			rules->fork_state[philo->right_fork_id] = 0;				
+			rules->fork_state[philo->right_fork_id] = 0;			
 			print_log(philo, "has put down a fork.");
 			philo->right_fork_id = -1;
 		}

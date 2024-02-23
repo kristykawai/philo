@@ -6,7 +6,7 @@
 /*   By: kawai <kawai@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 18:09:35 by kawai             #+#    #+#             */
-/*   Updated: 2024/02/22 23:32:11 by kawai            ###   ########.fr       */
+/*   Updated: 2024/02/23 11:37:50 by kawai            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,15 +28,23 @@ void *find_death(t_philo *philo)
 	return (0);
 }
 
-// void handle_philosopher_death(t_philo *philo) 
-// {
-// 	// t_rules *rules;
+int	check_eat_min(t_philo *philo)
+{
+	int i;
+	t_rules *rules;
 
-// 	// rules = *(philo->rules);
-// 	print_log(philo, "is dead.");
-// 	// error_exit("Philosopher died.", &rules);
-// 	// (NULL);
-// }
+	rules = *(philo->rules);
+	i = 0;
+	while(i < rules->philo_number)
+		{
+			if (rules->philo[i].meal_count == rules->min_meal_count
+				&& rules->total_meal_count == rules->philo_number * 
+				rules->min_meal_count)
+				return(1);
+			i++;
+		}
+		return (0);
+}
 
 void	*monitor_routine(void *philo_ptr)
 {
@@ -52,14 +60,18 @@ void	*monitor_routine(void *philo_ptr)
 		{
 			philo->is_alive = 0;
 			philo->time_death = gettime_ms();
-			if(rules->philo_die == 0)
-				print_log(philo, "is dead.");
-			rules->time_death = philo->time_death;
 			rules->philo_die = 1;
+			if(rules->philo_die == 1)
+				print_death_log(philo, "is dead.");
+			rules->time_death = philo->time_death;
 		}
+		else if (check_eat_min(philo) == 1)
+			rules->meal_stop = 1;
 		pthread_mutex_unlock(rules->access_mutex);
-		usleep(1000);
 	}
+	pthread_mutex_lock(rules->death_check_mutex);
+    rules->death_check_done++;
+    pthread_mutex_unlock(rules->death_check_mutex);
 	return (NULL);
 }
 
@@ -76,27 +88,3 @@ int i;
 		i++;
 	}
 }
-
-	// t_rules **rules;
-	// rules = (t_rules **)rule_ptr;
-	// int i;
-
-	// i = -1;
-	// while(1)
-	// {
-	// 	while (++i < (*rules)->philo_number)
-	// 	{
-	// 		if ((*rules)->philo[i].is_alive) 
-	// 		{
-	// 			if (gettime_ms() - (*rules)->philo[i].time_last_meal >= (*rules)->time_rule_die) //last_meal time not updated
-	// 			{
-	// 				(*rules)->philo[i].is_alive = 0;
-	// 				error_exit("process time smaller than time to die", rules); // tbc to check how to kill the thread 
-	// 			}
-	// 			else
-	// 				(*rules)->philo[i].is_alive = 1;
-	// 		}
-	// 	}
-	// usleep(10000);
-	// }
-	// return NULL;

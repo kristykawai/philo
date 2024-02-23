@@ -40,7 +40,11 @@ typedef struct s_rules
 	int total_meal_count;
 	int philo_die;
 	time_t time_death;
+	int meal_stop;
 	pthread_mutex_t *access_mutex;
+    int death_check_done;
+    pthread_mutex_t *death_check_mutex;
+	pthread_mutex_t *writing_mutex;
 }t_rules;
 
 //init_fork.c
@@ -84,8 +88,9 @@ void	error_exit(char * error_msg, t_rules **rules);
 
 //util.c
 void	print_log(t_philo *philo_ptr, char *msg);
-
+void	print_death_log(t_philo *philo, char *msg);
 //monitor.c
 void	*monitor_routine(void *philo_ptr);
 void	create_monitor_thread(t_rules **rules);
 void	*find_death(t_philo *philo);
+int		check_eat_min(t_philo *philo);

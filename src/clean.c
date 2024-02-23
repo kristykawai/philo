@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   clean.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kchan <marvin@42.fr>                       +#+  +:+       +#+        */
+/*   By: kawai <kawai@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 21:41:19 by kawai             #+#    #+#             */
-/*   Updated: 2024/02/22 18:34:26 by kchan            ###   ########.fr       */
+/*   Updated: 2024/02/23 11:43:28 by kawai            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,18 @@ void destroy_mutexes(t_rules **rules)
 		pthread_mutex_destroy((*rules)->access_mutex);
 		free_mutex((*rules)->access_mutex);
 		(*rules)->access_mutex = NULL;
+	}
+	if((*rules)->death_check_mutex != NULL)
+	{
+		pthread_mutex_destroy((*rules)->death_check_mutex);
+		free_mutex((*rules)->death_check_mutex);
+		(*rules)->death_check_mutex = NULL;
+	}
+	if((*rules)->writing_mutex != NULL)
+	{
+		pthread_mutex_destroy((*rules)->writing_mutex);
+		free_mutex((*rules)->writing_mutex);
+		(*rules)->writing_mutex = NULL;
 	}
 }
 
