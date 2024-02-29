@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   monitor.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kchan <marvin@42.fr>                       +#+  +:+       +#+        */
+/*   By: kawai <kawai@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 18:09:35 by kawai             #+#    #+#             */
-/*   Updated: 2024/02/29 18:27:41 by kchan            ###   ########.fr       */
+/*   Updated: 2024/02/29 22:00:30 by kawai            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,30 +56,25 @@ void	*monitor_routine(void *philo_ptr)
 	while (philo->is_alive == 1 && rules->philo_die != 1) 
 	{
 		pthread_mutex_lock(rules->access_mutex);
-		// if (rules->philo_number == 1)
+		if(rules->philo_number == 1)
+		{
+			if (timestamp_ms(&rules) > rules->time_rule_die)
+				error_exit("only one philo\n",&rules);
+		}
+		// if(philo->meal_count > 0)
 		// {
-		// 	if (gettime_ms() > rules->time_rule_die)
+		// 	if (gettime_ms() - philo->time_last_meal > rules->time_rule_die)
 		// 	{
 		// 		philo->is_alive = 0;
 		// 		philo->time_death = gettime_ms();
 		// 		rules->philo_die = 1;
 		// 		if(rules->philo_die == 1)
-		// 			print_death_log(philo, "is dead.");
+		// 			print_death_log(philo, "is dead in monitoring thread.");
 		// 		rules->time_death = philo->time_death;
 		// 	}
 		// }
-		if (gettime_ms() - philo->time_last_meal > rules->time_rule_die)
-		{
-			philo->is_alive = 0;
-			philo->time_death = gettime_ms();
-			rules->philo_die = 1;
-			if(rules->philo_die == 1)
-				print_death_log(philo, "is dead.");
-			rules->time_death = philo->time_death;
-		}
 		if(find_death(philo))
 			rules->philo_die = 1;
-				// rules->time_death = philo->time_death;
 		else if (check_eat_min(philo) == 1)
 			rules->meal_stop = 1;
 		pthread_mutex_unlock(rules->access_mutex);

@@ -10,6 +10,15 @@
 #include <sys/time.h>
 #include <signal.h>
 
+#define COLOR_RESET "\033[0m"
+#define RED "\033[1;31m"
+#define YELLOW "\033[1;33m"
+#define GREEN "\033[1;32m"
+#define BLUE "\033[1;34m"
+#define CYAN "\033[1;36m"
+#define MAGENTA "\033[1;35m"
+#define WHITE "\033[1;37m"
+
 typedef struct s_philo
 {
 	int philo_id;
@@ -23,6 +32,7 @@ typedef struct s_philo
 	pthread_t	thread_monitor_id;
 	struct s_rules **rules;
 	int	is_alive;
+	// int	fork_held;
 }t_philo;
 
 typedef struct s_rules
@@ -45,6 +55,7 @@ typedef struct s_rules
     int death_check_done;
     pthread_mutex_t *death_check_mutex;
 	pthread_mutex_t *writing_mutex;
+	// int half_equip;
 }t_rules;
 
 //init_fork.c
@@ -64,6 +75,7 @@ void	init_sim_time(t_rules ** rules);
 long	process_time_ms(long start_time, long end_time);
 long	gettime_ms(void);
 void	sleep_with_timeout(long duration_ms);
+long	timestamp_ms(t_rules **rules);
 
 //engine.c
 void	create_philo_thread(t_rules **rules);
@@ -88,8 +100,8 @@ void	cleanup_rules(t_rules **rules);
 void	error_exit(char * error_msg, t_rules **rules);
 
 //util.c
-void	print_log(t_philo *philo_ptr, char *msg);
-void	print_death_log(t_philo *philo, char *msg);
+void	print_log(t_philo *philo_ptr, char *msg, char *state_colour);
+void	print_death_log(t_philo *philo, char *msg,  char *state_colour);
 //monitor.c
 void	*monitor_routine(void *philo_ptr);
 void	create_monitor_thread(t_rules **rules);

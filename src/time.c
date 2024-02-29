@@ -3,14 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   time.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kchan <marvin@42.fr>                       +#+  +:+       +#+        */
+/*   By: kawai <kawai@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 15:01:56 by kchan             #+#    #+#             */
-/*   Updated: 2024/02/29 19:44:20 by kchan            ###   ########.fr       */
+/*   Updated: 2024/02/29 21:09:15 by kawai            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+long	timestamp_ms(t_rules **rules)
+{
+	return(gettime_ms()-(*rules)->time_sim_start);
+}
 
 long	gettime_ms(void)
 {

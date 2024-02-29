@@ -31,24 +31,24 @@ all:			$(NAME)
 
 # Test 1 800 200 200. The philosopher should not eat and should die.
 test1: all
-			echo Testing One philosopher 
+			echo Testing One philosopher -- The philosopher should not eat and should die.
 			./philo 1 800 200 200
 # Test 5 800 200 200. No philosopher should die.
 test2: all
-			echo Testing five philosopher
+			echo Testing five philosopher -- No philosopher should die.
 			./philo 5 800 200 200
 # Test 5 800 200 200 7. No philosopher should die and the simulation should stop
 #when every philosopher has eaten at least 7 times.
 test3: all
-			echo Testing five philosopher 7 meals
+			echo Testing five philosopher 7 meals -- No philosopher should die and the simulation should stop
 			./philo 5 800 200 200 7
 # Test 4 410 200 200. No philosopher should die.
 test4: all
-			echo Testing no philosopher should die
+			echo Testing no philosopher should die -- No philosopher should die.
 			./philo 4 410 200 200
 # Test 4 310 200 100. One philosopher should die.
 test5: all
-			echo Testing no philosopher should die
+			echo  One philosopher should die.
 			./philo 4 310 200 200
 
 # Test 1 800 200 200. The philosopher should not eat and should die.
