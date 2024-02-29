@@ -6,7 +6,7 @@
 /*   By: kchan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 15:31:40 by kchan             #+#    #+#             */
-/*   Updated: 2024/02/29 15:18:45 by kchan            ###   ########.fr       */
+/*   Updated: 2024/02/29 19:20:45 by kchan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,14 +28,13 @@ int death_check(t_philo *philo)
 	return(0);
 }
 
-
-int eating_condition(t_philo *philo)
-{
-	t_rules *rules;
+// int eating_condition(t_philo *philo)
+// {
+// 	t_rules *rules;
 	
-	rules = *(philo->rules);
-    return(gettime_ms() - philo->time_last_meal >= rules->time_rule_eat * 1000);
-}
+// 	rules = *(philo->rules);
+//     return(gettime_ms() - philo->time_last_meal >= rules->time_rule_eat * 1000);
+// }
 
 void	eating(t_philo *philo)
 {
@@ -47,7 +46,7 @@ void	eating(t_philo *philo)
 		long start_time;
 		start_time = gettime_ms();
 		print_log(philo,"is eating.");
-		sleep_with_timeout(rules->time_rule_eat * 1000, philo, eating_condition);
+		sleep_with_timeout(rules->time_rule_eat);
 		// usleep(rules->time_rule_eat * 1000);
 		// print_log(philo,"finished eating.");
 		if(!death_check(philo))
@@ -70,7 +69,8 @@ void	sleeping(t_philo *philo)
 	{
 		start_time = gettime_ms();
 		print_log(philo, "is sleeping.");
-		usleep(rules->time_rule_sleep * 1000);
+		sleep_with_timeout(rules->time_rule_sleep);
+		// usleep(rules->time_rule_sleep);
 		print_log(philo,"finished sleeping.");
 		printf("sleep time:%ld\n", gettime_ms() - start_time);
 	}
