@@ -3,27 +3,60 @@
 /*                                                        :::      ::::::::   */
 /*   process.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kawai <kawai@student.42.fr>                +#+  +:+       +#+        */
+/*   By: kchan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 15:31:40 by kchan             #+#    #+#             */
-/*   Updated: 2024/02/23 10:27:37 by kawai            ###   ########.fr       */
+/*   Updated: 2024/02/29 15:18:45 by kchan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
+int death_check(t_philo *philo)
+{
+	t_rules *rules;
+	
+	rules = *(philo->rules);
+	if (gettime_ms() - philo->time_last_meal > rules->time_rule_die)
+	{
+		philo->is_alive = 0;
+		philo->time_death = gettime_ms();
+		printf("death check success\n");
+		print_death_log(philo, "is dead.");
+		return(1);
+	} 
+	return(0);
+}
+
+
+int eating_condition(t_philo *philo)
+{
+	t_rules *rules;
+	
+	rules = *(philo->rules);
+    return(gettime_ms() - philo->time_last_meal >= rules->time_rule_eat * 1000);
+}
+
 void	eating(t_philo *philo)
 {
 	t_rules *rules;
-
+	
 	rules = *(philo->rules);
 	if(rules->philo_die != 1 && rules->meal_stop != 1)
 	{
-		philo->time_last_meal = gettime_ms();
+		long start_time;
+		start_time = gettime_ms();
 		print_log(philo,"is eating.");
-		usleep(rules->time_rule_eat * 1000);
-		philo->meal_count++;
-		rules->total_meal_count++;
+		sleep_with_timeout(rules->time_rule_eat * 1000, philo, eating_condition);
+		// usleep(rules->time_rule_eat * 1000);
+		// print_log(philo,"finished eating.");
+		if(!death_check(philo))
+		{
+			philo->time_last_meal = gettime_ms();
+			philo->meal_count++;
+			rules->total_meal_count++;
+		}
+		// printf("meal time:%ld\n", philo->time_last_meal - start_time);
 	}
 }
 
@@ -32,10 +65,14 @@ void	sleeping(t_philo *philo)
 	t_rules *rules;
 
 	rules = *(philo->rules);
+	long start_time;
 	if(rules->philo_die != 1 && rules->meal_stop != 1)
 	{
-		usleep(rules->time_rule_sleep * 1000);
+		start_time = gettime_ms();
 		print_log(philo, "is sleeping.");
+		usleep(rules->time_rule_sleep * 1000);
+		print_log(philo,"finished sleeping.");
+		printf("sleep time:%ld\n", gettime_ms() - start_time);
 	}
 }
 
@@ -84,8 +121,8 @@ void *routine(void *philo_ptr)
 				put_down_forks(philo);
 			}
 		}
-		else 
-			sleeping(philo);
+		// else 
+		// 	sleeping(philo);
 	}
 	return (NULL);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   time.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kawai <kawai@student.42.fr>                +#+  +:+       +#+        */
+/*   By: kchan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 15:01:56 by kchan             #+#    #+#             */
-/*   Updated: 2024/02/18 21:02:05 by kawai            ###   ########.fr       */
+/*   Updated: 2024/02/29 14:52:42 by kchan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,4 +36,29 @@ void	init_sim_time(t_rules ** rules)
 	if(creation_time == -1)
 		error_exit("creation time failed.\n", rules);
 	(*rules)->time_sim_start = creation_time;
+}
+
+int	sleep_with_timeout(long duration_us, t_philo *philo, int (*condition)(t_philo *))
+{
+	struct	timeval start_time;
+	struct	timeval end_time;
+	long	remaining_time_us;
+	long	elapsed_time_us;
+	
+	gettimeofday(&start_time, NULL);
+	remaining_time_us = duration_us;
+    while (remaining_time_us > 0)
+	{
+		if (condition(philo) == 1)
+			return (1);
+		usleep(remaining_time_us);
+		gettimeofday(&end_time, NULL);
+		elapsed_time_us = (end_time.tv_sec - start_time.tv_sec) * 1000000 +
+							(end_time.tv_usec - start_time.tv_usec);
+
+		remaining_time_us = duration_us - elapsed_time_us;
+		if (remaining_time_us <= 0)
+			return (0);
+	}
+	return (0);
 }

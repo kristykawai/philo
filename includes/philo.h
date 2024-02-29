@@ -63,6 +63,7 @@ int		init_param(t_rules **rules, char **argv);
 void	init_sim_time(t_rules ** rules);
 long	process_time_ms(long start_time, long end_time);
 long	gettime_ms(void);
+int		sleep_with_timeout(long duration_us, t_philo *philo, int (*condition)(t_philo *));
 
 //engine.c
 void	create_philo_thread(t_rules **rules);
