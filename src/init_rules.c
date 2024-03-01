@@ -6,7 +6,7 @@
 /*   By: kchan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 15:11:31 by kchan             #+#    #+#             */
-/*   Updated: 2024/03/01 15:09:26 by kchan            ###   ########.fr       */
+/*   Updated: 2024/03/01 19:44:10 by kchan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,7 @@ void	init_philo(t_rules **rules)
 		(*rules)->philo[i].meal_count = 0;
 		(*rules)->philo[i].rules = rules;
 		(*rules)->philo[i].is_alive = 1;
+		(*rules)->philo[i].fork_acquired = 0;
 		i++;
 	}
 }

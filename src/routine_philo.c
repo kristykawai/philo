@@ -6,7 +6,7 @@
 /*   By: kchan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 12:16:33 by kawai             #+#    #+#             */
-/*   Updated: 2024/03/01 15:22:29 by kchan            ###   ########.fr       */
+/*   Updated: 2024/03/01 20:24:20 by kchan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,13 +20,12 @@ void	*routine(void *philo_ptr)
 	philo = (t_philo *)philo_ptr;
 	rules = *(philo->rules);
 	philo->time_creation = gettime_ms();
-	philo->time_last_meal = philo->time_creation;
-	while (philo->is_alive == 1 && !find_death(philo)
-		&& !check_eat_min(philo) && rules->meal_stop != 1)
+	while (rules->meal_stop != 1 && rules->philo_die != 1)
 	{
 		if (philo->meal_count <= rules->total_meal_count / rules->philo_number)
 		{
-			try_to_acquire_forks(philo);
+			while (!philo->fork_acquired)
+				try_to_acquire_forks(philo);
 			if (philo->left_fork_id != -1 && philo->right_fork_id != -1
 				&& philo->is_alive == 1 && rules->meal_stop != 1)
 			{

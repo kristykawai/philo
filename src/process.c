@@ -6,7 +6,7 @@
 /*   By: kchan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 15:31:40 by kchan             #+#    #+#             */
-/*   Updated: 2024/03/01 14:37:39 by kchan            ###   ########.fr       */
+/*   Updated: 2024/03/01 20:28:11 by kchan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,16 @@ int	death_check(t_philo *philo)
 
 	rules = *(philo->rules);
 	pthread_mutex_lock(rules->death_check_mutex);
+	if (philo->fork_acquired < 2)
+	{
+		if (gettime_ms() - rules->time_sim_start > rules->time_rule_die)
+		{
+			philo->is_alive = 0;
+			philo->time_death = gettime_ms();
+			print_death_log(philo, "died", RED);
+			return (1);
+		}
+	}
 	if (philo->meal_count > 0)
 	{
 		if (gettime_ms() - philo->time_last_meal > rules->time_rule_die)
@@ -70,12 +80,8 @@ void	thinking(t_philo *philo)
 
 void	eat_and_sleep_think(t_philo *philo)
 {
-	if (death_check(philo) != 1 && !check_eat_min(philo))
-		eating(philo);
-	if (death_check(philo) != 1 && !check_eat_min(philo))
-		put_down_forks(philo);
-	if (death_check(philo) != 1 && !check_eat_min(philo))
-		sleeping(philo);
-	if (death_check(philo) != 1 && !check_eat_min(philo))
-		thinking(philo);
+	eating(philo);
+	put_down_forks(philo);
+	sleeping(philo);
+	thinking(philo);
 }

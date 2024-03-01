@@ -6,7 +6,7 @@
 /*   By: kchan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 12:00:11 by kawai             #+#    #+#             */
-/*   Updated: 2024/03/01 15:09:40 by kchan            ###   ########.fr       */
+/*   Updated: 2024/03/01 20:19:03 by kchan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ typedef struct s_philo
 	pthread_t		thread_monitor_id;
 	struct s_rules	**rules;
 	int				is_alive;
+	int				fork_acquired;
 }	t_philo;
 
 typedef struct s_rules
@@ -129,3 +130,4 @@ void	*monitor_routine(void *philo_ptr);
 void	create_monitor_thread(t_rules **rules);
 void	*find_death(t_philo *philo);
 int		check_eat_min(t_philo *philo);
+void	exit_condition_lancher(t_rules **rules);

@@ -6,7 +6,7 @@
 /*   By: kchan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 20:25:53 by kawai             #+#    #+#             */
-/*   Updated: 2024/03/01 15:27:14 by kchan            ###   ########.fr       */
+/*   Updated: 2024/03/01 20:28:53 by kchan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,28 +31,16 @@ void	philo_pthread_join(t_rules **rules)
 	int	i;
 
 	i = 0;
-	while (i < (*rules)->philo_number
-		&& !(*rules)->philo_die && !(*rules)->meal_stop)
+	while (i < (*rules)->philo_number)
 	{
 		pthread_join((*rules)->philo[i].thread_id, NULL);
 		i++;
 	}
 	i = 0;
-	while (i < (*rules)->philo_number
-		&& !(*rules)->philo_die && !(*rules)->meal_stop)
+	while (i < (*rules)->philo_number)
 	{
 		pthread_join((*rules)->philo[i].thread_monitor_id, NULL);
 		i++;
-	}
-}
-
-void	exit_condition_lancher(t_rules **rules)
-{
-	while (!(*rules)->philo_die)
-	{
-		pthread_mutex_lock((*rules)->access_mutex);
-		print_exit_condition_lancher_log(rules);
-		pthread_mutex_unlock((*rules)->access_mutex);
 	}
 }
 
@@ -60,6 +48,5 @@ void	engine(t_rules **rules)
 {
 	create_philo_thread(rules);
 	create_monitor_thread(rules);
-	exit_condition_lancher(rules);
 	philo_pthread_join(rules);
 }

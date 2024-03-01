@@ -6,11 +6,33 @@
 /*   By: kchan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 18:09:35 by kawai             #+#    #+#             */
-/*   Updated: 2024/03/01 15:20:46 by kchan            ###   ########.fr       */
+/*   Updated: 2024/03/01 20:28:40 by kchan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+void	exit_condition_lancher(t_rules **rules)
+{
+	pthread_mutex_lock((*rules)->access_mutex);
+	print_exit_condition_lancher_log(rules);
+	pthread_mutex_unlock((*rules)->access_mutex);
+}
+
+void	print_exit_condition_lancher_log(t_rules **rules)
+{
+	if ((*rules)->meal_stop)
+	{
+		print_death_log(latest_eat_philo((*rules)->philo),
+			"finished meal. Meal stop condition reached.\n", RED);
+		cleanup_rules(rules);
+		exit(0);
+	}
+	if ((*rules)->philo_die)
+	{
+		error_exit("philo die\n", rules);
+	}
+}
 
 void	*find_death(t_philo *philo)
 {
@@ -53,22 +75,18 @@ void	*monitor_routine(void *philo_ptr)
 
 	philo = (t_philo *)philo_ptr;
 	rules = *(philo->rules);
-	while (philo->is_alive == 1 && rules->philo_die != 1)
+	while (1)
 	{
-		pthread_mutex_lock(rules->access_mutex);
-		if (rules->philo_number == 1)
-		{
-			if (timestamp_ms(&rules) > rules->time_rule_die)
-			{
-				print_death_log(philo_ptr, "died", RED);
-				error_exit("only one philo\n", &rules);
-			}
-		}
-		if (find_death(philo))
-			rules->philo_die = 1;
 		if (check_eat_min(philo) == 1)
+		{
 			rules->meal_stop = 1;
-		pthread_mutex_unlock(rules->access_mutex);
+			exit_condition_lancher(&rules);
+		}
+		if (death_check(philo) == 1)
+		{
+			rules->philo_die = 1;
+			exit_condition_lancher(&rules);
+		}
 	}
 	return (NULL);
 }

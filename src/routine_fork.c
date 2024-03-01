@@ -6,7 +6,7 @@
 /*   By: kchan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 20:50:37 by kawai             #+#    #+#             */
-/*   Updated: 2024/03/01 15:22:34 by kchan            ###   ########.fr       */
+/*   Updated: 2024/03/01 20:09:31 by kchan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,13 +75,9 @@ void	try_to_acquire_forks(t_philo *philo)
 		pthread_mutex_unlock(rules->access_mutex);
 		return ;
 	}
-	if (!find_death(philo) && !check_eat_min(philo))
-	{
-		if (philo->left_fork_id == -1)
-			philo->left_fork_id = check_assign_fork(philo);
-		if (philo->right_fork_id == -1)
-			philo->right_fork_id = check_assign_fork(philo);
-	}
+	philo->left_fork_id = check_assign_fork(philo);
+	philo->right_fork_id = check_assign_fork(philo);
+	philo->fork_acquired += 2;
 	pthread_mutex_unlock(rules->access_mutex);
 }
 
@@ -105,6 +101,7 @@ void	put_down_forks(t_philo *philo)
 			rules->fork_state[philo->right_fork_id] = 0;
 			philo->right_fork_id = -1;
 		}
+		philo->fork_acquired = 0;
 	}
 	pthread_mutex_unlock(rules->access_mutex);
 }
