@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   engine.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kawai <kawai@student.42.fr>                +#+  +:+       +#+        */
+/*   By: kchan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 20:25:53 by kawai             #+#    #+#             */
-/*   Updated: 2024/03/01 12:38:02 by kawai            ###   ########.fr       */
+/*   Updated: 2024/03/01 15:27:14 by kchan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void	philo_pthread_join(t_rules **rules)
 
 void	exit_condition_lancher(t_rules **rules)
 {
-	while (!check_eat_min((*rules)->philo) && !(*rules)->philo_die)
+	while (!(*rules)->philo_die)
 	{
 		pthread_mutex_lock((*rules)->access_mutex);
 		print_exit_condition_lancher_log(rules);

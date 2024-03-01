@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   monitor.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kawai <kawai@student.42.fr>                +#+  +:+       +#+        */
+/*   By: kchan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 18:09:35 by kawai             #+#    #+#             */
-/*   Updated: 2024/03/01 12:09:36 by kawai            ###   ########.fr       */
+/*   Updated: 2024/03/01 15:20:46 by kchan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,10 @@ void	*monitor_routine(void *philo_ptr)
 		if (rules->philo_number == 1)
 		{
 			if (timestamp_ms(&rules) > rules->time_rule_die)
+			{
+				print_death_log(philo_ptr, "died", RED);
 				error_exit("only one philo\n", &rules);
+			}
 		}
 		if (find_death(philo))
 			rules->philo_die = 1;
