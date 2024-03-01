@@ -6,21 +6,21 @@
 /*   By: kawai <kawai@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 20:25:53 by kawai             #+#    #+#             */
-/*   Updated: 2024/03/01 10:33:54 by kawai            ###   ########.fr       */
+/*   Updated: 2024/03/01 12:21:48 by kawai            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void create_philo_thread(t_rules **rules)
+void	create_philo_thread(t_rules **rules)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (i < (*rules)->philo_number)
 	{
-		if (pthread_create(&(*rules)->philo[i].thread_id, 
-			NULL, routine, &(*rules)->philo[i]) != 0)
+		if (pthread_create(&(*rules)->philo[i].thread_id,
+				NULL, routine, &(*rules)->philo[i]) != 0)
 			error_exit("failed to create thread for a philo", rules);
 		i++;
 	}
@@ -28,49 +28,38 @@ void create_philo_thread(t_rules **rules)
 
 void	philo_pthread_join(t_rules **rules)
 {
-	int i = 0;
-	while (i < (*rules)->philo_number && !(*rules)->philo_die && !(*rules)->meal_stop)
+	int	i;
+
+	i = 0;
+	while (i < (*rules)->philo_number
+		&& !(*rules)->philo_die && !(*rules)->meal_stop)
 	{
 		pthread_join((*rules)->philo[i].thread_id, NULL);
 		i++;
 	}
 	i = 0;
-	while (i < (*rules)->philo_number && !(*rules)->philo_die && !(*rules)->meal_stop)
+	while (i < (*rules)->philo_number
+		&& !(*rules)->philo_die && !(*rules)->meal_stop)
 	{
 		pthread_join((*rules)->philo[i].thread_monitor_id, NULL);
 		i++;
 	}
 }
 
-void	engine(t_rules **rules)
+void	exit_condition_lancher(t_rules **rules)
 {
-	int termination_message_printed;
-	
-	create_philo_thread(rules);
-	create_monitor_thread(rules);
-	termination_message_printed = 0;
-	while (!check_eat_min((*rules)->philo) && !(*rules)->philo_die) 
+	while (!check_eat_min((*rules)->philo) && !(*rules)->philo_die)
 	{
 		pthread_mutex_lock((*rules)->access_mutex);
-		if ((*rules)->philo_die || (*rules)->meal_stop)
-		{
-			if (!termination_message_printed)
-			{
-				if((*rules)->philo_die)
-				{
-					print_death_log(find_death((*rules)->philo), "death program exit time", RED);
-					error_exit("one philo died. simulation stop\n", rules);
-				}
-				else
-				{
-					printf("Meal stop condition reached.\n");
-					termination_message_printed = 1;
-					cleanup_rules(rules);
-					exit(0);
-				}
-			}
-		}
+		print_exit_condition_lancher_log(rules);
 		pthread_mutex_unlock((*rules)->access_mutex);
 	}
+}
+
+void	engine(t_rules **rules)
+{
+	create_philo_thread(rules);
+	create_monitor_thread(rules);
+	exit_condition_lancher(rules);
 	philo_pthread_join(rules);
 }

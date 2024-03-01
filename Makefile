@@ -13,7 +13,8 @@ HEADER_DIR	=	includes/
 HEADER		=	$(addprefix $(HEADER_DIR), $(HEADER_SRCS))
 SRCS		=	main.c init_fork.c init_rules.c\
 				time.c clean.c engine.c util.c \
-				process.c routine_fork.c monitor.c 
+				process.c routine_fork.c monitor.c \
+				init_mutex.c routine_philo.c
 
 SRC_DIR		=	src/
 SRC_PATH	=	$(addprefix $(SRC_DIR), $(SRCS))
