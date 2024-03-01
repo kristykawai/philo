@@ -6,7 +6,7 @@
 /*   By: kawai <kawai@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 15:31:40 by kchan             #+#    #+#             */
-/*   Updated: 2024/02/29 23:24:36 by kawai            ###   ########.fr       */
+/*   Updated: 2024/03/01 10:51:11 by kawai            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,26 +17,18 @@ int death_check(t_philo *philo)
 	t_rules *rules;
 	
 	rules = *(philo->rules);
-	// if(philo->meal_count > 0)
-	// {
+	pthread_mutex_lock(rules->death_check_mutex);
+	if(philo->meal_count > 0)
+	{
 	if (gettime_ms() - philo->time_last_meal > rules->time_rule_die)		
 	{
 			philo->is_alive = 0;
 			philo->time_death = gettime_ms();
-			printf("death check success\n");
 			print_death_log(philo, "is dead.", RED);
 			return(1);
 	}
-	// } 
-	// else
-	// if (gettime_ms() - rules->time_sim_start > rules->time_rule_die)
-	// {
-	// 	philo->is_alive = 0;
-	// 	philo->time_death = gettime_ms();
-	// 	printf("death check success\n");
-	// 	print_death_log(philo, "is dead.", RED);
-	// 	return(1);
-	// }
+	}
+	pthread_mutex_unlock(rules->death_check_mutex);
 	return(0);
 }
 

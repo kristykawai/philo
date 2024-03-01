@@ -6,7 +6,7 @@
 /*   By: kawai <kawai@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 20:50:37 by kawai             #+#    #+#             */
-/*   Updated: 2024/02/29 23:21:13 by kawai            ###   ########.fr       */
+/*   Updated: 2024/03/01 10:43:56 by kawai            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,11 @@ void try_to_acquire_forks(t_philo *philo)
 	rules = *(philo->rules);
 	pthread_mutex_lock(rules->access_mutex);
 	if(check_available_fork_number(rules->fork_state, rules->philo_number) < 2)
+	{
+		pthread_mutex_unlock(rules->access_mutex);
+		return	;
+	}
+	if(!longest_wait_philo(philo))
 	{
 		pthread_mutex_unlock(rules->access_mutex);
 		return	;

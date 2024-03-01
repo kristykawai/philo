@@ -6,7 +6,7 @@
 /*   By: kawai <kawai@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 15:11:31 by kchan             #+#    #+#             */
-/*   Updated: 2024/02/29 23:21:38 by kawai            ###   ########.fr       */
+/*   Updated: 2024/03/01 10:32:00 by kawai            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int	init_rules(t_rules **rules, char **argv)
 	(*rules)->philo_die = 0;
 	(*rules)->time_death = 0;
 	(*rules)->meal_stop = 0;
-	(*rules)->death_check_done = 0;
+	// (*rules)->death_check_done = 0;
 	return(0);
 }
 

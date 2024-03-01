@@ -52,7 +52,7 @@ typedef struct s_rules
 	time_t time_death;
 	int meal_stop;
 	pthread_mutex_t *access_mutex;
-    int death_check_done;
+    // int death_check_done;
     pthread_mutex_t *death_check_mutex;
 	pthread_mutex_t *writing_mutex;
 	// int half_equip;
@@ -72,7 +72,6 @@ int		init_param(t_rules **rules, char **argv);
 
 //time.c
 void	init_sim_time(t_rules ** rules);
-long	process_time_ms(long start_time, long end_time);
 long	gettime_ms(void);
 void	sleep_with_timeout(long duration_ms);
 long	timestamp_ms(t_rules **rules);
@@ -90,6 +89,7 @@ int		find_available_fork(int *fork_state, int philo_nb);
 int		check_assign_fork(t_philo *philo);
 void	try_to_acquire_forks(t_philo *philo);
 void	put_down_forks(t_philo *philo);
+int		longest_wait_philo(t_philo *philo);
 
 
 //clean.c

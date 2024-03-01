@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   engine.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kchan <marvin@42.fr>                       +#+  +:+       +#+        */
+/*   By: kawai <kawai@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 20:25:53 by kawai             #+#    #+#             */
-/*   Updated: 2024/02/29 18:22:10 by kchan            ###   ########.fr       */
+/*   Updated: 2024/03/01 10:33:54 by kawai            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,10 @@ void	engine(t_rules **rules)
 			if (!termination_message_printed)
 			{
 				if((*rules)->philo_die)
+				{
+					print_death_log(find_death((*rules)->philo), "death program exit time", RED);
 					error_exit("one philo died. simulation stop\n", rules);
+				}
 				else
 				{
 					printf("Meal stop condition reached.\n");
