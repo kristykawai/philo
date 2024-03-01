@@ -9,7 +9,7 @@ CPPFLAGS	:=	-I includes
 RM			=	rm -rf
 
 #FILES AND PATH
-HEADER_SRCS	=	philo.h 
+HEADER_SRCS	=	philo.h philo_init.h
 HEADER_DIR	=	includes/
 HEADER		=	$(addprefix $(HEADER_DIR), $(HEADER_SRCS))
 SRCS		=	main.c init_fork.c init_rules.c\
@@ -25,11 +25,9 @@ OBJ       	=	$(patsubst $(SRC_DIR)%.c, $(OBJ_DIR)%.o, $(SRC_PATH))
 #LIB
 LIB = -lpthread
 
-# Create obj folder if it doesn't exist
-$(shell mkdir -p $(OBJ_DIR))
-
 #COMMANDS
 $(OBJ_DIR)%.o: $(SRC_DIR)%.c $(HEADER) Makefile
+				@mkdir -p $(OBJ_DIR)
 				@${CC} ${FLAGS} $(CPPFLAGS) -c $< -o $@
 
 all:			$(NAME)

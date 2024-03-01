@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   init_fork.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kchan <marvin@42.fr>                       +#+  +:+       +#+        */
+/*   By: kawai <kawai@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 22:38:51 by kawai             #+#    #+#             */
-/*   Updated: 2024/03/01 15:10:45 by kchan            ###   ########.fr       */
+/*   Updated: 2024/03/02 00:12:03 by kawai            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+#include "philo_init.h"
 
 int	int_fork_state_value(t_rules **rules)
 {

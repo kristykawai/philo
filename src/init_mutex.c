@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   init_mutex.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kchan <marvin@42.fr>                       +#+  +:+       +#+        */
+/*   By: kawai <kawai@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 10:59:27 by kawai             #+#    #+#             */
-/*   Updated: 2024/03/01 15:11:15 by kchan            ###   ########.fr       */
+/*   Updated: 2024/03/02 00:12:06 by kawai            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+#include "philo_init.h"
 
 void	init_access(t_rules **rules)
 {

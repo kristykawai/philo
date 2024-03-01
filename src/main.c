@@ -6,11 +6,12 @@
 /*   By: kawai <kawai@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 20:59:26 by kawai             #+#    #+#             */
-/*   Updated: 2024/03/01 23:34:11 by kawai            ###   ########.fr       */
+/*   Updated: 2024/03/02 00:00:51 by kawai            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+#include "philo_init.h"
 
 int	main(int argc, char *argv[])
 {

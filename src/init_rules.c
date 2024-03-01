@@ -6,11 +6,12 @@
 /*   By: kawai <kawai@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 15:11:31 by kchan             #+#    #+#             */
-/*   Updated: 2024/03/01 22:36:22 by kawai            ###   ########.fr       */
+/*   Updated: 2024/03/02 00:12:11 by kawai            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+#include "philo_init.h"
 
 int	flag_decimal(const char *str)
 {
