@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   routine_fork.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kawai <kawai@student.42.fr>                +#+  +:+       +#+        */
+/*   By: kchan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 20:50:37 by kawai             #+#    #+#             */
-/*   Updated: 2024/03/01 12:23:35 by kawai            ###   ########.fr       */
+/*   Updated: 2024/03/01 14:45:14 by kchan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ int	check_assign_fork(t_philo *philo)
 	{
 		pthread_mutex_lock(&rules->fork[fork_index]);
 		rules->fork_state[fork_index] = 1;
-		print_log(philo, "has taken a fork.", CYAN);
+		print_log(philo, "has taken a fork", CYAN);
 	}
 	return (fork_index);
 }
@@ -97,14 +97,12 @@ void	put_down_forks(t_philo *philo)
 		{
 			pthread_mutex_unlock(&rules->fork[philo->left_fork_id]);
 			rules->fork_state[philo->left_fork_id] = 0;
-			print_log(philo, "has put down a fork.", WHITE);
 			philo->left_fork_id = -1;
 		}
 		if (philo->right_fork_id != -1)
 		{
 			pthread_mutex_unlock(&rules->fork[philo->right_fork_id]);
 			rules->fork_state[philo->right_fork_id] = 0;
-			print_log(philo, "has put down a fork.", WHITE);
 			philo->right_fork_id = -1;
 		}
 	}

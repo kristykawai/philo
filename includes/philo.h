@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kawai <kawai@student.42.fr>                +#+  +:+       +#+        */
+/*   By: kchan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 12:00:11 by kawai             #+#    #+#             */
-/*   Updated: 2024/03/01 12:18:37 by kawai            ###   ########.fr       */
+/*   Updated: 2024/03/01 15:09:40 by kchan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ typedef struct s_philo
 	pthread_t		thread_monitor_id;
 	struct s_rules	**rules;
 	int				is_alive;
-}t_philo;
+}	t_philo;
 
 typedef struct s_rules
 {
@@ -65,7 +65,7 @@ typedef struct s_rules
 	pthread_mutex_t		*access_mutex;
 	pthread_mutex_t		*death_check_mutex;
 	pthread_mutex_t		*writing_mutex;
-}t_rules;
+}	t_rules;
 
 //init_fork.c
 int		int_fork_state_value(t_rules **rules);

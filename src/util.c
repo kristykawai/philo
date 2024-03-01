@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   util.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kawai <kawai@student.42.fr>                +#+  +:+       +#+        */
+/*   By: kchan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 16:38:10 by kchan             #+#    #+#             */
-/*   Updated: 2024/03/01 12:38:06 by kawai            ###   ########.fr       */
+/*   Updated: 2024/03/01 14:42:48 by kchan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@ void	print_log(t_philo *philo, char *msg, char *state_colour)
 	rules = *(philo->rules);
 	pthread_mutex_lock(rules->writing_mutex);
 	if (!rules->philo_die && rules->meal_stop != 1)
-		printf("%s timestamp: %ld %ld philosopher %d %s %s\n",
-			state_colour, timestamp_ms(&rules), gettime_ms(),
+		printf("%s%ld %d %s%s\n",
+			state_colour, timestamp_ms(&rules),
 			philo->philo_id, msg, COLOR_RESET);
 	pthread_mutex_unlock(rules->writing_mutex);
 	return ;
@@ -32,9 +32,8 @@ void	print_death_log(t_philo *philo, char *msg, char *state_colour)
 
 	rules = *(philo->rules);
 	pthread_mutex_lock(rules->writing_mutex);
-	printf("%s timestamp:%ld %ld philosopher %d %s %s\n",
-		state_colour, timestamp_ms(&rules), gettime_ms(),
-		philo->philo_id, msg, COLOR_RESET);
+	printf("%s%ld %d %s%s\n",
+		state_colour, timestamp_ms(&rules), philo->philo_id, msg, COLOR_RESET);
 	pthread_mutex_unlock(rules->writing_mutex);
 	return ;
 }

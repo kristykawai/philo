@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   process.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kawai <kawai@student.42.fr>                +#+  +:+       +#+        */
+/*   By: kchan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 15:31:40 by kchan             #+#    #+#             */
-/*   Updated: 2024/03/01 12:17:22 by kawai            ###   ########.fr       */
+/*   Updated: 2024/03/01 14:37:39 by kchan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	death_check(t_philo *philo)
 		{
 			philo->is_alive = 0;
 			philo->time_death = gettime_ms();
-			print_death_log(philo, "is dead.", RED);
+			print_death_log(philo, "died", RED);
 			return (1);
 		}
 	}
@@ -39,7 +39,7 @@ void	eating(t_philo *philo)
 	rules = *(philo->rules);
 	if (rules->philo_die != 1 && rules->meal_stop != 1)
 	{
-		print_log(philo, "is eating.", YELLOW);
+		print_log(philo, "is eating", YELLOW);
 		philo->time_last_meal = gettime_ms();
 		sleep_with_timeout(rules->time_rule_eat);
 		philo->meal_count++;
@@ -54,7 +54,7 @@ void	sleeping(t_philo *philo)
 	rules = *(philo->rules);
 	if (rules->philo_die != 1 && rules->meal_stop != 1)
 	{
-		print_log(philo, "is sleeping.", GREEN);
+		print_log(philo, "is sleeping", GREEN);
 		sleep_with_timeout(rules->time_rule_sleep);
 	}
 }
@@ -65,7 +65,7 @@ void	thinking(t_philo *philo)
 
 	rules = *(philo->rules);
 	if (rules->philo_die != 1 && rules->meal_stop != 1)
-		print_log(philo, "is thinking.", BLUE);
+		print_log(philo, "is thinking", BLUE);
 }
 
 void	eat_and_sleep_think(t_philo *philo)
