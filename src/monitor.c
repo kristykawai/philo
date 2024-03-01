@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   monitor.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kchan <marvin@42.fr>                       +#+  +:+       +#+        */
+/*   By: kawai <kawai@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 18:09:35 by kawai             #+#    #+#             */
-/*   Updated: 2024/03/01 20:28:40 by kchan            ###   ########.fr       */
+/*   Updated: 2024/03/01 23:42:16 by kawai            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,23 +15,8 @@
 void	exit_condition_lancher(t_rules **rules)
 {
 	pthread_mutex_lock((*rules)->access_mutex);
-	print_exit_condition_lancher_log(rules);
+	print_exit_condition_launcher_log(rules);
 	pthread_mutex_unlock((*rules)->access_mutex);
-}
-
-void	print_exit_condition_lancher_log(t_rules **rules)
-{
-	if ((*rules)->meal_stop)
-	{
-		print_death_log(latest_eat_philo((*rules)->philo),
-			"finished meal. Meal stop condition reached.\n", RED);
-		cleanup_rules(rules);
-		exit(0);
-	}
-	if ((*rules)->philo_die)
-	{
-		error_exit("philo die\n", rules);
-	}
 }
 
 void	*find_death(t_philo *philo)

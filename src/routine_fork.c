@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   routine_fork.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kchan <marvin@42.fr>                       +#+  +:+       +#+        */
+/*   By: kawai <kawai@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 20:50:37 by kawai             #+#    #+#             */
-/*   Updated: 2024/03/01 20:09:31 by kchan            ###   ########.fr       */
+/*   Updated: 2024/03/01 23:29:52 by kawai            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ int	check_available_fork_number(int *fork_state, int philo_nb)
 
 	i = 0;
 	fork_num = 0;
+	if (fork_state == NULL)
+		return (-1);
 	while (i < philo_nb)
 	{
 		if (fork_state[i] == 0)

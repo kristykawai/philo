@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kchan <marvin@42.fr>                       +#+  +:+       +#+        */
+/*   By: kawai <kawai@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 12:00:11 by kawai             #+#    #+#             */
-/*   Updated: 2024/03/01 20:19:03 by kchan            ###   ########.fr       */
+/*   Updated: 2024/03/01 23:42:02 by kawai            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,34 +68,44 @@ typedef struct s_rules
 	pthread_mutex_t		*writing_mutex;
 }	t_rules;
 
-//init_fork.c
-int		int_fork_state_value(t_rules **rules);
-int		int_fork_mutex(t_rules **rules);
-void	init_fork(t_rules **rules);
+//init_rules.c
+int		flag_decimal(const char *str);
+int		rules_value_check(t_rules **rules, char **argv);
+int		init_rules(t_rules **rules, char **argv);
+void	init_philo(t_rules **rules);
+int		init_param(t_rules **rules, char **argv);
 
 //init_mutex.c
 void	init_access(t_rules **rules);
 void	init_death_check(t_rules **rules);
 void	init_write(t_rules **rules);
 
-//init_rules.c
-int		rules_value_check(t_rules **rules, char **argv);
-int		init_rules(t_rules **rules, char **argv);
-void	create_philo_thread(t_rules **rules);
-int		init_param(t_rules **rules, char **argv);
+//init_fork.c
+int		int_fork_state_value(t_rules **rules);
+int		int_fork_mutex(t_rules **rules);
+void	init_fork(t_rules **rules);
 
 //time.c
-void	init_sim_time(t_rules **rules);
-long	gettime_ms(void);
-void	sleep_with_timeout(long duration_ms);
 long	timestamp_ms(t_rules **rules);
+long	gettime_ms(void);
+void	init_sim_time(t_rules **rules);
+void	sleep_with_timeout(long duration_ms);
+int		longest_wait_philo(t_philo *philo);
 
 //engine.c
 void	create_philo_thread(t_rules **rules);
 void	philo_pthread_join(t_rules **rules);
 void	engine(t_rules **rules);
 
+//monitor.c
+void	exit_condition_lancher(t_rules **rules);
+void	*find_death(t_philo *philo);
+int		check_eat_min(t_philo *philo);
+void	create_monitor_thread(t_rules **rules);
+void	*monitor_routine(void *philo_ptr);
+
 //routine_philo.c
+void	eat_and_sleep_think(t_philo *philo);
 void	*routine(void *philo_ptr);
 
 //routine_fork.c
@@ -103,14 +113,13 @@ int		find_available_fork(int *fork_state, int philo_nb);
 int		check_assign_fork(t_philo *philo);
 void	try_to_acquire_forks(t_philo *philo);
 void	put_down_forks(t_philo *philo);
-int		longest_wait_philo(t_philo *philo);
 
 //process.c
+int		death_check_start_time(t_philo *philo);
 int		death_check(t_philo *philo);
 void	eating(t_philo *philo);
 void	sleeping(t_philo *philo);
 void	thinking(t_philo *philo);
-void	eat_and_sleep_think(t_philo *philo);
 
 //clean.c
 void	free_mutex(pthread_mutex_t *mutex_ptr);
@@ -123,11 +132,4 @@ void	error_exit(char *error_msg, t_rules **rules);
 void	print_log(t_philo *philo_ptr, char *msg, char *state_colour);
 void	print_death_log(t_philo *philo, char *msg, char *state_colour);
 void	*latest_eat_philo(t_philo *philo);
-void	print_exit_condition_lancher_log(t_rules **rules);
-
-//monitor.c
-void	*monitor_routine(void *philo_ptr);
-void	create_monitor_thread(t_rules **rules);
-void	*find_death(t_philo *philo);
-int		check_eat_min(t_philo *philo);
-void	exit_condition_lancher(t_rules **rules);
+void	print_exit_condition_launcher_log(t_rules **rules);

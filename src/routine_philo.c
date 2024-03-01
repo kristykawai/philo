@@ -3,14 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   routine_philo.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kchan <marvin@42.fr>                       +#+  +:+       +#+        */
+/*   By: kawai <kawai@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 12:16:33 by kawai             #+#    #+#             */
-/*   Updated: 2024/03/01 20:24:20 by kchan            ###   ########.fr       */
+/*   Updated: 2024/03/01 23:03:58 by kawai            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+void	eat_and_sleep_think(t_philo *philo)
+{
+	eating(philo);
+	put_down_forks(philo);
+	sleeping(philo);
+	thinking(philo);
+}
 
 void	*routine(void *philo_ptr)
 {

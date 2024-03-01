@@ -3,14 +3,25 @@
 /*                                                        :::      ::::::::   */
 /*   init_rules.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kchan <marvin@42.fr>                       +#+  +:+       +#+        */
+/*   By: kawai <kawai@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 15:11:31 by kchan             #+#    #+#             */
-/*   Updated: 2024/03/01 19:44:10 by kchan            ###   ########.fr       */
+/*   Updated: 2024/03/01 22:36:22 by kawai            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+int	flag_decimal(const char *str)
+{
+	while (*str)
+	{
+		if (*str == '.')
+			return (1);
+		str++;
+	}
+	return (0);
+}
 
 int	rules_value_check(t_rules **rules, char **argv)
 {
@@ -20,9 +31,10 @@ int	rules_value_check(t_rules **rules, char **argv)
 		printf("Error: Only positive numbers are allowed for arguments.\n");
 		return (0);
 	}
-	if (argv[5] != NULL && (*rules)->min_meal_count <= 0)
+	if ((argv[5] != NULL && (*rules)->min_meal_count <= 0) || (argv[5] != NULL
+			&& flag_decimal(argv[5])))
 	{
-		printf("Error: Only positive numbers are allowed.\n");
+		printf("Error: Only positive integer is allowed for meal time.\n");
 		return (0);
 	}
 	return (1);

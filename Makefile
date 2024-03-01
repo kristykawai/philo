@@ -1,9 +1,10 @@
 #SETUP
 NAME		=	philo
-CC			=	gcc -g -pthread
+CC			=	gcc -pthread
 FLAGS		=	-Wall -Wextra -Werror
 CPPFLAGS	:=	-I includes
 
+#CC			=	gcc -g -pthread
 #FLAGS += -fsanitize=pthread
 RM			=	rm -rf
 
@@ -23,6 +24,9 @@ OBJ       	=	$(patsubst $(SRC_DIR)%.c, $(OBJ_DIR)%.o, $(SRC_PATH))
 
 #LIB
 LIB = -lpthread
+
+# Create obj folder if it doesn't exist
+$(shell mkdir -p $(OBJ_DIR))
 
 #COMMANDS
 $(OBJ_DIR)%.o: $(SRC_DIR)%.c $(HEADER) Makefile
@@ -57,8 +61,7 @@ test5: all
 # Test 5 800 200 200 7. No philosopher should die and the simulation should stop when every philosopher has eaten at least 7 times.
 # Test 4 410 200 200. No philosopher should die.
 # Test 4 310 200 100. One philosopher should die.
-# own test
-# zsh: segmentation fault  ./philo 4 800 200 200 5
+
 $(NAME): $(OBJ)
 	@$(CC) $(FLAGS) $(OBJ) $(LIB) -o $(NAME) 
 	@echo -e "$(GREEN)$(NAME) created!$(DEFAULT)"
